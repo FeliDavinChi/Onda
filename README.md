@@ -1,10 +1,12 @@
 # Onda
 
-Onda is a native Android application built around music as a social object. This is a new, independent repository; the surrounding VoiceNotes project is unrelated.
+Onda is a native Android application built around music as a social object. This is a new, independent repository; the original VoiceNotes project is unrelated.
 
 ## Status
 
 Repository reconnaissance and architecture planning are documented in [RECONNAISSANCE.md](RECONNAISSANCE.md). The first Phase 1 foundation increment compiles, builds a debug APK, and passes tests and lint (with dependency-update warnings). See [BUILD_REPORT.md](BUILD_REPORT.md) for evidence and unperformed device/server checks. This repository is not a production release. Playback, authentication, social features, and real messaging are subsequent milestones, with explicit verification gates in [ROADMAP.md](ROADMAP.md).
+
+Project folder: `C:/Users/laksh/OneDrive/Documents/ChatGPT/Onda`.
 
 ## Build
 

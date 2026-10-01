@@ -44,3 +44,9 @@ Independent read-only review found no critical issues. Fixed its important navig
 No emulator/device launch, screenshot QA, TalkBack execution, large-font UI inspection, frame/battery measurement, Room instrumentation or real backup/restore test was run. No Supabase schema/policies were deployed or tested, and the CI workflow was created but not run remotely. Device UI checks remain necessary before declaring UI acceptance complete.
 
 Real audio/provider integration, the single MediaSessionService/player, queue and mini/full player are Phase 2. The demo deliberately cannot stream. Auth, real chat/social activity, recommendation ranking and RLS enforcement are future implementation work; architecture documents do not imply those features exist. Playback stability/device verification is the gate before advancing to discovery and social milestones.
+
+## Project relocation
+
+On 2 October 2026, the repository moved from `C:/Users/laksh/OneDrive/Documents/VoiceNotes/social-music` to the existing Onda project folder at `C:/Users/laksh/OneDrive/Documents/ChatGPT/Onda`. Both original commits, portable build tools and APK were preserved. The previous empty destination Git metadata is backed up inside ignored `.tools/transfer-empty-onda-repository.git`. The ignored SDK path was updated for the new location. The old project folder was removed by the transfer; the VoiceNotes application was not changed.
+
+Verification from the new folder passed: 39 test executions with zero failures/errors, debug APK assembly, and Android lint with zero errors and the same 39 dependency-update warnings. The APK application label remains Onda.
