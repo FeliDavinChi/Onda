@@ -1,5 +1,7 @@
 # Design system
 
+Product name: **Onda**. Use the shared app-name resource for visible application branding.
+
 Status: foundation direction; each shipped component must be verified on device. Original visual identity, independent of reference branding/screens. Dark mode leads with deep ink surfaces, cool mint accents and restrained warm artwork colors. Light mode uses warm white, dark ink and visible boundaries.
 
 ## Hierarchy

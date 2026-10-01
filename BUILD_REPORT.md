@@ -1,5 +1,7 @@
 # Foundation verification report
 
+Branding update, 2 October 2026: the app is named **Onda**. Updated the visible app-name resource, Gradle project name and product documentation. Debug assemble and lint passed; Android `aapt dump badging` confirmed the APK application label is `Onda`. No behavior changed, so the existing behavioral test baseline below was not rerun for this rename.
+
 Date: 2 October 2026 (Asia/Kolkata). Scope: Phase 0 reconnaissance and the first Phase 1 foundation increment. This is a local Git repository on `codex/foundation`, with no remote configured or publication performed.
 
 ## Implemented
