@@ -1,6 +1,6 @@
 # Onda
 
-Onda is a native Android application built around music as a social object. This is a new, independent repository; the original VoiceNotes project is unrelated.
+Onda is a native Android application built around music as a social object.
 
 ## Status
 
