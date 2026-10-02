@@ -4,7 +4,7 @@ Onda is a native Android application built around music as a social object.
 
 ## Status
 
-Repository reconnaissance and architecture planning are documented in [RECONNAISSANCE.md](RECONNAISSANCE.md). The first Phase 1 foundation increment compiles, builds a debug APK, and passes tests and lint (with dependency-update warnings). See [BUILD_REPORT.md](BUILD_REPORT.md) for evidence and unperformed device/server checks. This repository is not a production release. Playback, authentication, social features, and real messaging are subsequent milestones, with explicit verification gates in [ROADMAP.md](ROADMAP.md).
+Onda 0.2.0 adds live YouTube Music song search/discovery and a Media3 background playback service, mini/full player, seek, shuffle/repeat, and editable queue with paused restart restoration. Live search and a bounded audio-byte request have passed, alongside host tests, debug assembly and lint. Physical audio, background/lockscreen/headset behavior and rendered accessibility still need device verification; this is a development preview. Authentication, library persistence, social features and messaging remain future milestones. See [BUILD_REPORT.md](BUILD_REPORT.md) and [ROADMAP.md](ROADMAP.md).
 
 Project folder: `C:/Users/laksh/OneDrive/Documents/ChatGPT/Onda`.
 
@@ -22,7 +22,17 @@ This checkout also has ignored portable tools. Run `scripts/gradle-local.ps1 tes
 
 ## Configuration
 
-The initial app uses an explicitly local demo catalog. The optional Supabase factory is infrastructure only: this increment has no authentication flow or environment-to-client configuration wiring. At the auth milestone, supply an HTTPS project URL and public publishable key through validated injected configuration; never add a service-role or secret key. Composables never access backend configuration. Deployment and production credentials are outside this increment.
+The app uses NewPipeExtractor v0.26.5 through an isolated adapter; no API key is required. It is an unofficial integration, so upstream changes, region restrictions or unavailable tracks can cause explicit failures. Search is limited to songs; album, artist and playlist detail remain unsupported. Stream URLs are resolved just before playback and never saved in queue snapshots. The metadata-only demo is retained as a fixture and is not the production binding.
+
+The optional Supabase factory is infrastructure only: no authentication or app configuration wiring exists yet. At the auth milestone, supply an HTTPS project URL and public publishable key through validated injected configuration; never add a service-role or secret key.
+
+Live provider tests are separate from ordinary CI because they depend on the upstream service:
+
+```powershell
+$env:ONDA_LIVE_PROVIDER_TEST = 'true'
+.\scripts\gradle-local.ps1 :data:music:test --tests '*YoutubeLiveSmokeTest'
+Remove-Item Env:ONDA_LIVE_PROVIDER_TEST
+```
 
 ## Engineering documents
 
@@ -36,4 +46,4 @@ The original user requirements are preserved in [docs/PRODUCT_BRIEF.md](docs/PRO
 
 ## Reference and ownership
 
-LastWave is a GPL-3.0 reference project. No LastWave code, branding, assets, or layouts are incorporated. See [references](RECONNAISSANCE.md#reference-review) for the inspected sources. This repository does not yet grant a distribution license for original application code; select one before public distribution. Third-party dependency licenses remain applicable. A future provider dependency must receive a specific license and compatibility review before incorporation.
+Original Onda code is licensed under [GNU GPL version 3](LICENSE), as approved by the project owner. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency licenses and source. Each APK release links its corresponding source tag; license texts/notices are also packaged in the APK. LastWave is a reference project; no LastWave code, branding, assets or layouts are incorporated.

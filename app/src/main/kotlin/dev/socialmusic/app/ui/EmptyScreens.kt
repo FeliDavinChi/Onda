@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import dev.socialmusic.app.R
 import dev.socialmusic.common.VisualEffectLevel
@@ -26,6 +27,7 @@ fun EmptyDestination(@StringRes title: Int, @StringRes description: Int, icon: I
 
 @Composable
 fun ProfileScreen(effect: VisualEffectLevel, saveError: Boolean, onSelect: (VisualEffectLevel) -> Unit) {
+    val uriHandler = LocalUriHandler.current
     LazyColumn(Modifier.fillMaxSize(), contentPadding = PaddingValues(Spacing.large), verticalArrangement = Arrangement.spacedBy(Spacing.medium)) {
         item { Icon(Icons.Outlined.Person, contentDescription = null, modifier = Modifier.size(48.dp), tint = MaterialTheme.colorScheme.primary) }
         item { Text(stringResource(R.string.profile_headline), style = MaterialTheme.typography.headlineLarge) }
@@ -48,5 +50,10 @@ fun ProfileScreen(effect: VisualEffectLevel, saveError: Boolean, onSelect: (Visu
             )
         }
         if (saveError) item { Text(stringResource(R.string.preference_error), color = MaterialTheme.colorScheme.error) }
+        item {
+            Spacer(Modifier.height(Spacing.section))
+            Text(stringResource(R.string.open_source_license), color = MaterialTheme.colorScheme.onSurfaceVariant)
+            TextButton(onClick = { uriHandler.openUri("https://github.com/FeliDavinChi/Onda/tree/v0.2.0") }) { Text(stringResource(R.string.view_source_license)) }
+        }
     }
 }

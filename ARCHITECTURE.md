@@ -1,6 +1,6 @@
 # Architecture
 
-Status: proposed product architecture plus Phase 1 foundation scope. Music is the shared object across catalog, player, library, recommendations, activity and conversations.
+Status: product architecture with implemented foundation, provider/song search and playback milestone. Device playback gates and backend/social/library features remain open. Music is the shared object across catalog, player, library, recommendations, activity and conversations.
 
 ## Decisions and alternatives
 
@@ -8,7 +8,7 @@ Use a new Kotlin Android repository with a few real module boundaries. Extending
 
 ## Module direction
 
-`app` owns launch, navigation and Hilt composition. `core:model` owns immutable provider-independent music/social/playback types. `domain:music` owns `MusicSource`. `data:music` implements demo source and later isolated providers. `core:common` holds state/configuration types with no Android dependency. `core:database` owns Room cache entities/DAO/schema. `core:network` owns Ktor/Supabase creation and DTO boundaries. `core:designsystem` owns Compose theme/tokens/glass.
+`app` owns launch, navigation and Hilt composition. `core:model` owns immutable provider-independent music/social/playback types. `domain:music` owns `MusicSource` and `PlaybackController`. `data:music` isolates NewPipe extraction/HTTP/mapping; the demo is test support. `core:playback` owns the sole ExoPlayer/MediaSessionService, session controller, validated commands, cancellable stream resolver and process-wide ordered private snapshots. `core:common` holds state/configuration types with no Android dependency. `core:database` owns Room cache entities/DAO/schema. `core:network` owns Ktor/Supabase creation and DTO boundaries. `core:designsystem` owns Compose theme/tokens/glass.
 
 Dependencies flow UI -> repository/contract -> implementation -> infrastructure. Models have no Android, provider, Supabase or UI dependencies. Feature packages contain screen/ViewModel/state, not independent Track variants. Introduce repositories/use cases only for actual coordination or business rules; do not wrap one call in multiple abstractions.
 

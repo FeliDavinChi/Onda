@@ -15,6 +15,7 @@ data class PlaybackState(
     val shuffle: Boolean = false,
     val repeat: RepeatMode = RepeatMode.OFF,
     val error: PlaybackError? = null,
+    val playWhenReady: Boolean = false,
 ) {
     init {
         require(currentIndex == -1 || currentIndex in queue.indices)

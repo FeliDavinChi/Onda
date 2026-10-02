@@ -29,7 +29,10 @@ private enum class Destination(val route: String, @StringRes val label: Int, val
 }
 
 @Composable
-fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel()) {
+fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel(), playerModel: PlayerViewModel = hiltViewModel()) {
+    val player = playerModel.controller
+    val playback by player.state.collectAsStateWithLifecycle()
+    var playerOpen by remember { mutableStateOf(false) }
     val navController = rememberNavController()
     val entry by navController.currentBackStackEntryAsState()
     val effect by preferences.effects.collectAsStateWithLifecycle()
@@ -42,6 +45,8 @@ fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel()) {
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
+            Column {
+            MiniPlayer(playback, player, visualEffect) { playerOpen = true }
             GlassSurface(
                 Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = Spacing.medium, vertical = Spacing.small),
                 level = GlassLevel.Elevated, effects = visualEffect,
@@ -64,14 +69,16 @@ fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel()) {
                     }
                 }
             }
+            }
         },
     ) { padding ->
-        NavHost(navController, startDestination = Destination.Home.route, modifier = Modifier.padding(padding)) {
-            composable(Destination.Home.route) { HomeScreen() }
-            composable(Destination.Explore.route) { EmptyDestination(R.string.explore_headline, R.string.explore_empty, Icons.Outlined.Explore) }
+        NavHost(navController, startDestination = Destination.Home.route, modifier = Modifier.padding(padding).consumeWindowInsets(padding)) {
+            composable(Destination.Home.route) { HomeScreen(player, onExplore = { navController.navigate(Destination.Explore.route) { launchSingleTop = true } }) }
+            composable(Destination.Explore.route) { ExploreScreen(player) }
             composable(Destination.Library.route) { EmptyDestination(R.string.library_headline, R.string.library_empty, Icons.Outlined.LibraryMusic) }
             composable(Destination.Messages.route) { EmptyDestination(R.string.messages_headline, R.string.messages_empty, Icons.AutoMirrored.Outlined.Chat) }
             composable(Destination.Profile.route) { ProfileScreen(effect, saveError, preferences::select) }
         }
     }
+    if (playerOpen) FullPlayer(playback, player) { playerOpen = false }
 }

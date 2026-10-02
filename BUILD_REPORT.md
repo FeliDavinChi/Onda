@@ -1,4 +1,22 @@
-# Foundation verification report
+# Onda verification report
+
+## 0.2.0 real playback preview — 2 October 2026
+
+Implemented live song discovery/search through NewPipeExtractor v0.26.5, a service-owned Media3 ExoPlayer/session, app controller, mini/full player, seeking, shuffle/repeat, occurrence-based queue edits, bounded retry and private ordered snapshots restored paused. No playback URL is persisted. Original code now uses GPL-3.0; source tags, dependency notices and packaged license texts accompany APK distribution.
+
+Host verification ran `scripts/gradle-local.ps1 test :app:assembleDebug :app:lintDebug --console=plain` successfully. JUnit reports contain 115 executions: 113 passed, zero failures/errors, two intentionally skipped live checks. This covers app debug/release/staging and playback debug/release variants. Provider tests cover mapping/stream delivery/HTTP cancellation; search tests cover debounce, stale results and retry; queue/snapshot tests cover duplicates, paused restore, corruption/byte bounds and real AtomicFile ordering on Robolectric SDK28. Actual Media3 unprepared timeline tests verify active occurrence/position through move/remove. These are host checks, not speaker/device tests.
+
+Final build: 406 tasks, 75 executed and 331 up-to-date, `BUILD SUCCESSFUL`. Lint: zero errors, 48 dependency/AGP update warnings, with no suppressed findings. APK: application `dev.socialmusic.app.debug`, label Onda, version 0.2.0/code 2, min SDK26/target SDK35, 28,147,952 bytes. `apksigner verify --verbose --print-certs` passed (v2 signature, development debug certificate). SHA-256: `9b1a8c7606a08345cbfce4ca72ead7a215d37c1473785a8b723e8939dadb20b8`. The APK includes GPL/Apache/Rhino/jsoup/protobuf license texts and third-party notices under `assets/licenses/`.
+
+Separately, opt-in live checks passed: music search returned 20 tracks, and a publicly available track resolved to HTTPS audio/webm and returned 1,024 audio bytes with HTTP 206. URLs/tokens were not recorded. Normal CI skips live checks to avoid dependence on upstream availability. The adapter is unofficial and availability can change.
+
+Independent read-only reviews covered provider, playback and app UI. Corrected DASH delivery acceptance, discarded parsing errors, pending-restore destruction, API33-only snapshot reading, cross-service writer races, ignored session results, skip/retry after errors, hidden connection failures, buffering control labels and accessibility/insets. Windows Gradle workspace rename errors were intermittent; canonical portable-tool cache paths and a subsequent build completed without clearing shared caches.
+
+No device or emulator is attached. Physical audio, focus interruptions, background/lockscreen/headset/Bluetooth controls, process-kill behavior, rendered 200% fonts/TalkBack and frame/battery checks remain unperformed. Backend authentication, likes/library/history, album/artist/playlist details, messaging and social features remain roadmap work. This preview does not close those gates.
+
+The repository is public at https://github.com/FeliDavinChi/Onda. The previous v0.1.0 APK remains in Releases. The historical foundation report below describes the earlier local state; its statements about no remote/provider/license are superseded by this preview.
+
+## Historical foundation baseline
 
 Branding update, 2 October 2026: the app is named **Onda**. Updated the visible app-name resource, Gradle project name and product documentation. Debug assemble and lint passed; Android `aapt dump badging` confirmed the APK application label is `Onda`. No behavior changed, so the existing behavioral test baseline below was not rerun for this rename.
 
