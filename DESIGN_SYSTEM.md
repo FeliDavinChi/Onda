@@ -2,7 +2,7 @@
 
 Product name: **Onda**. Use the shared app-name resource for visible application branding.
 
-Status: foundation direction; each shipped component must be verified on device. Original visual identity, independent of reference branding/screens. Dark mode leads with deep ink surfaces, cool mint accents and restrained warm artwork colors. Light mode uses warm white, dark ink and visible boundaries.
+Status: 0.3.0 UI implementation; physical-device acceptance remains a gate. Original visual identity, independent of reference branding/screens. Dark mode leads with deep ink surfaces, cool mint accents and restrained warm artwork colors. Light mode uses soft white, dark ink and visible boundaries. Static wave contours give Onda its signature backdrop.
 
 ## Hierarchy
 
@@ -17,20 +17,20 @@ Content remains readable and mostly solid. Interactive surfaces have moderate ti
 | Accent dark / light | #A8E6CF / #176448 |
 | Spacing | 4, 8, 12, 16, 24, 32 dp |
 | Shapes | 12 dp small, 20 dp card, 28 dp floating |
-| Typography | Material 3 semantic roles; system sans; scalable sp |
+| Typography | Bundled Manrope (SIL OFL 1.1), Android glyph fallback, scalable sp; display 34/40, headline 26/34, title 16/23, body 14/21, label 11/16 |
 | Interactive minimum | 48 x 48 dp |
 | Motion | 180 ms controls, 260 ms navigation; reduced mode shortens; minimal removes nonessential motion |
 | Focus / selected | Shape and text/state cue as well as accent; never color alone |
 
-GlassLevel: None/Subtle/Standard/Elevated/Overlay. Central alpha values: 1.0/.97/.94/.92/.96 for readable surface tint; borders 0/.08/.12/.16/.18; elevation 0/0/2/6/10 dp. These are foundation tint/elevation values, not a claim of true backdrop refraction. Transparency composes against background; text uses foreground appropriate to the effective surface.
+GlassLevel: None/Subtle/Standard/Elevated/Overlay. Central Full tint alpha values: 1.0/.90/.78/.72/.88; directional border alpha 0/.08/.14/.22/.24; elevation 0/0/2/8/10 dp; blur 0/12/18/24/24 dp. One-pixel-density-independent edge light follows a diagonal gradient. None always stays opaque, including in Reduced mode.
 
-FULL/REDUCED/MINIMAL are persisted user effect preferences. Initial foundation supports tint/border/elevation; blur is deliberately zero until a measured backdrop implementation exists. MINIMAL uses opaque surfaces with zero decoration/elevation. REDUCED limits elevation. FULL permits richer tint/depth. Future blur radii, saturation, highlight and springs belong in the same token set; do not spread magic values across features or label a foreground blur as backdrop glass.
+FULL/REDUCED/MINIMAL are persisted user effect preferences. Haze 1.5.4 captures the actual quiet wave/artwork backdrop and blurs it behind floating controls; foreground controls stay sharp. Each window has one source and sibling glass surfaces. Content/other glass surfaces are never captured into that source. This is Liquid Glass-inspired blur, tint and edge light, without optical refraction. API33+ non-low-RAM devices use blur. API26–32 and low-RAM devices use opaque fallback. MINIMAL disables capture, blur, decoration and elevation; REDUCED uses 8dp blur, .94 tint and no elevation. Physical frame/battery measurements remain required before performance acceptance.
 
 ## Components and ownership
 
 Phase 1 implements theme, GlassSurface and reusable navigation/empty/error primitives as required by its shell. GlassCard/GlassTopBar/GlassMiniPlayer/buttons/search/dialog/sheet/context menu/composer/chip/player controls are built when their feature exists, all on the same tokens. Do not create a file full of empty wrappers in advance.
 
-FullPlayer uses artwork -> cached ambient palette -> metadata -> one coherent playback surface -> secondary actions. MiniPlayer floats over bottom navigation outside routes. TrackShareCard preserves track identity and connects to that player; it is not a generic link preview. No nested live blur stacks. Bright artwork uses darker supporting tint, dark artwork lighter edges, saturated artwork reduced background saturation. Palette colors are hints; accessible foreground/background pairs win.
+Home uses real catalog artwork in a horizontal rail, then compact readable track rows. Search has a glass field with a persistent semantic label and actionable empty/error states. The dock keeps all five visible destination labels; at 150%+ text it becomes two rows (three on narrow windows) so names stay readable. Windows shorter than 500dp retain one row with wrapping labels, preserving a usable content viewport in split screen. IME hides the dock while input is active, reserving keyboard space for results. FullPlayer uses artwork, a bounded faint artwork ambient layer, metadata, one glass seek/transport surface and queue access. MiniPlayer persists outside routes. Artwork-derived palette extraction, shared-element player transitions and social sharing are future work; they are not implied by this UI pass. No nested live blur stacks.
 
 ## Accessibility and performance
 

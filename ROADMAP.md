@@ -2,7 +2,7 @@
 
 Initial task: reconnaissance -> architecture documents -> begin Phase 1. Status is evidence-based; planned product features are not marked complete because interfaces exist.
 
-Current status: Phase 1 foundation is host-verified. The Phase 2 playback implementation and song-search portion of Phase 3 are implemented: NewPipe provider, one service-owned Media3 player, queue, mini/full controls, debounced search and paused restoration. Fixture tests, Robolectric timeline/storage checks, live search/audio-byte requests, debug assembly and lint pass. Phase 2's physical playback/background/focus/headset gate remains open; album/artist details and backend/social/library features remain future work. [BUILD_REPORT.md](BUILD_REPORT.md) records the evidence and limits.
+Current status: Phase 1 foundation is host-verified. The Phase 2 playback implementation and song-search portion of Phase 3 are implemented: NewPipe provider, one service-owned Media3 player, queue, mini/full controls, debounced search and paused restoration. The requested 0.3.0 UI pass adds actual backdrop blur with effect/device fallbacks, discovery artwork, polished transport and labeled large-text navigation. UI renders/interaction checks complement the existing provider/timeline/storage tests. Physical playback/background/focus/headset, TalkBack and frame/battery gates remain open; album/artist details and backend/social/library features remain future work. [BUILD_REPORT.md](BUILD_REPORT.md) records the evidence and limits.
 
 | Phase | Deliverable | Gate before progression |
 | --- | --- | --- |

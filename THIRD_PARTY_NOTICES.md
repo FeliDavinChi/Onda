@@ -20,6 +20,9 @@ These source links and license copies are bundled in the APK's `assets/licenses/
 
 ## Playback and platform libraries
 
+- Haze 1.5.4: [Chris Banes and contributors](https://github.com/chrisbanes/haze/tree/1.5.4), Apache License 2.0. Used for captured-background blur; no Haze sample app layouts are incorporated.
+- Manrope: copyright 2018 The Manrope Project Authors (Mikhail Sharanda, Mirko Velimirovic, Alexey Kudryavtsev), [SIL Open Font License 1.1](third_party/licenses/Manrope-OFL.txt). The unmodified variable font is bundled from [Google Fonts](https://github.com/google/fonts/tree/main/ofl/manrope).
+
 - AndroidX Media3, Compose, Room, DataStore and other AndroidX libraries: [Android Open Source Project](https://android.googlesource.com/platform/frameworks/support/), Apache License 2.0.
 - Kotlin and kotlinx.coroutines / kotlinx.serialization: [JetBrains Kotlin](https://github.com/JetBrains/kotlin), Apache License 2.0.
 - Hilt / Dagger: [Google Dagger](https://github.com/google/dagger), Apache License 2.0.

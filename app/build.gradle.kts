@@ -12,8 +12,8 @@ android {
         applicationId = "dev.socialmusic.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
-        versionName = "0.2.0"
+        versionCode = 3
+        versionName = "0.3.0"
     }
     buildTypes {
         debug { applicationIdSuffix = ".debug" }
@@ -26,6 +26,7 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
     buildFeatures { compose = true }
+    testOptions { unitTests.isIncludeAndroidResources = true }
 }
 kotlin { jvmToolchain(17) }
 val prepareLicenseAssets by tasks.registering(Copy::class) {
@@ -65,4 +66,10 @@ dependencies {
     debugImplementation(libs.compose.tooling)
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.compose.ui.test)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
+    testImplementation(libs.coil.test)
+    debugImplementation(libs.compose.test.manifest)
 }

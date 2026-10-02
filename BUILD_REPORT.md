@@ -1,5 +1,27 @@
 # Onda verification report
 
+## 0.3.0 Liquid Glass UI preview — 2 October 2026
+
+Implemented captured-backdrop glass with Haze 1.5.4, directional edge light, a quiet original wave field and licensed Manrope typography. Home now presents live artwork discovery and a clear search entrance; Explore has a labeled glass search field and actionable empty/error states. Floating navigation and the mini-player lead to an artwork-focused full player with one seek/transport surface. Existing provider, background playback, queue, shuffle/repeat and retry commands remain connected. Profile exposes persisted Full/Reduced/Minimal effects; deferred library/social features use truthful empty states.
+
+Each window owns one quiet backdrop source. Controls remain sharp, without capturing themselves or other glass. API33+ non-low-RAM devices use blur; older/low-RAM devices and Minimal use opaque material. This is Liquid Glass-inspired blur/tint/edge light, without optical refraction. The route viewport ends above the dock or keyboard. Navigation adapts to width, text scale and short split-screen windows while retaining visible labels.
+
+Final host verification passed:
+
+```powershell
+.\scripts\gradle-local.ps1 test :app:assembleDebug :app:lintDebug '-Dorg.gradle.vfs.watch=false' --no-daemon --max-workers=1 --console=plain
+```
+
+`BUILD SUCCESSFUL` in 8m 27s: 422 tasks, 109 executed and 313 up-to-date. JUnit reports contain 131 executions: **129 passed, zero failures/errors, two intentionally skipped live-network checks**. This includes 16 new debug-only UI checks against production Compose components. A final packaging-only refresh after font-notice whitespace cleanup also passed (130 tasks, 4 executed); the delivered APK signature was verified again. Android lint reports **zero errors, 48 warnings** (6 AndroidGradlePluginVersion and 42 GradleDependency); no findings are suppressed. Intermittent Windows shared-cache rename failures were resolved by the subsequent single-worker build without deleting shared caches.
+
+Robolectric native SDK35/28 renders and Roborazzi captures cover dark/light Home and player, populated/empty search, Full/Minimal, 200% text, narrow and short windows, and a synthetic IME boundary. Interaction checks cover mini-player opening/buffering pause intent, clear search/genre/retry, queue play-next/remove by occurrence, seek, shuffle/repeat and transport. Pixel checks verify readable dark headings, actual backdrop sampling and opaque low-RAM/None fallback. Screenshots were visually inspected; [Home](docs/ui-preview/home-dark.png) and [player](docs/ui-preview/player-dark.png) previews use original offline test artwork/metadata, never production fake results. CI retains the full render report as an artifact.
+
+Independent final read-only review found no remaining concrete medium/high issues after corrections to search semantics, large-font labels, bounded content/IME visibility and height-aware navigation. Dark foreground inheritance and dialog font-scale test setup were also corrected during screenshot review.
+
+APK: `dev.socialmusic.app.debug`, label Onda, version **0.3.0/code 3**, min SDK26/target SDK35, **27,728,868 bytes**. `apksigner verify --verbose --print-certs` passed with a v2 signature and development debug certificate. SHA-256: `17c75918749f8a161ab1f97b1a4a6fc2a77ceb1851de3837347aa02e514565ed`. The APK bundles GPL/Apache/Manrope/Rhino/jsoup/protobuf license texts and notices under `assets/licenses/`. Delivery uses a v0.3.0 source tag, Onda source archive and the pinned extractor source alongside the APK in GitHub Releases.
+
+No physical device/emulator is attached. Host renders do not establish TalkBack order, frame/battery performance or device audio/background/focus/headset/process-kill behavior. Those gates remain open. Authentication, persistent library/history and social/messaging backends remain roadmap work. The reports below describe earlier milestones and are historical where this UI preview supersedes them.
+
 ## 0.2.0 real playback preview — 2 October 2026
 
 Implemented live song discovery/search through NewPipeExtractor v0.26.5, a service-owned Media3 ExoPlayer/session, app controller, mini/full player, seeking, shuffle/repeat, occurrence-based queue edits, bounded retry and private ordered snapshots restored paused. No playback URL is persisted. Original code now uses GPL-3.0; source tags, dependency notices and packaged license texts accompany APK distribution.

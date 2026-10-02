@@ -4,9 +4,17 @@ Onda is a native Android application built around music as a social object.
 
 ## Status
 
-Onda 0.2.0 adds live YouTube Music song search/discovery and a Media3 background playback service, mini/full player, seek, shuffle/repeat, and editable queue with paused restart restoration. Live search and a bounded audio-byte request have passed, alongside host tests, debug assembly and lint. Physical audio, background/lockscreen/headset behavior and rendered accessibility still need device verification; this is a development preview. Authentication, library persistence, social features and messaging remain future milestones. See [BUILD_REPORT.md](BUILD_REPORT.md) and [ROADMAP.md](ROADMAP.md).
+Onda 0.3.0 adds a Liquid Glass-inspired native interface: an artwork discovery rail, glass search, floating navigation and mini-player, and one coherent full-player transport surface. Dark/light Manrope typography, adaptive labeled navigation at large font sizes, and persisted Full/Reduced/Minimal effects are included. Android 13+ non-low-memory devices use captured-backdrop blur; other devices have readable solid surfaces. Live YouTube Music search and Media3 background playback, seek, shuffle/repeat, queue editing and paused restoration remain connected. Authentication, library persistence, social features and messaging remain future milestones. This is a development preview; physical audio, background/headset behavior, TalkBack and frame/battery checks still need device verification. See [BUILD_REPORT.md](BUILD_REPORT.md) and [ROADMAP.md](ROADMAP.md).
 
 Project folder: `C:/Users/laksh/OneDrive/Documents/ChatGPT/Onda`.
+
+## UI preview
+
+Production Compose components rendered on the host with offline test artwork and metadata. The app uses live provider results.
+
+| Home | Player |
+| --- | --- |
+| ![Onda Home](docs/ui-preview/home-dark.png) | ![Onda player](docs/ui-preview/player-dark.png) |
 
 ## Build
 
@@ -21,6 +29,8 @@ Gradle 8.11.1 and dependencies are pinned. The SDK/AGP baseline is an initial re
 This checkout also has ignored portable tools. Run `scripts/gradle-local.ps1 test :app:assembleDebug :app:lintDebug` to use them. For a fresh Windows checkout, `scripts/bootstrap-tools.ps1` downloads verified tools; pass `-AcceptAndroidLicense` only after reviewing and accepting [Android SDK terms](https://developer.android.com/studio/terms). The helper keeps the tools and Gradle cache within `.tools/`.
 
 ## Configuration
+
+UI host renders and interaction/material checks use Robolectric with Roborazzi. Run `:app:testDebugUnitTest --tests '*LiquidGlassUiTest'`; PNGs appear in `app/build/reports/ui/` and CI's verification-reports artifact. Artwork/metadata in these renders are offline test fixtures; production uses the live provider.
 
 The app uses NewPipeExtractor v0.26.5 through an isolated adapter; no API key is required. It is an unofficial integration, so upstream changes, region restrictions or unavailable tracks can cause explicit failures. Search is limited to songs; album, artist and playlist detail remain unsupported. Stream URLs are resolved just before playback and never saved in queue snapshots. The metadata-only demo is retained as a fixture and is not the production binding.
 

@@ -25,3 +25,4 @@ jobs:
           path: |
             **/build/reports/tests/
             app/build/reports/lint-results-debug.*
+            app/build/reports/ui/
