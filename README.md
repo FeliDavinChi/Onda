@@ -4,9 +4,18 @@ Onda is a native Android application built around music as a social object.
 
 ## Status
 
-Repository reconnaissance and architecture planning are documented in [RECONNAISSANCE.md](RECONNAISSANCE.md). The first Phase 1 foundation increment compiles, builds a debug APK, and passes tests and lint (with dependency-update warnings). See [BUILD_REPORT.md](BUILD_REPORT.md) for evidence and unperformed device/server checks. This repository is not a production release. Playback, authentication, social features, and real messaging are subsequent milestones, with explicit verification gates in [ROADMAP.md](ROADMAP.md).
-
+Onda 0.4.0 introduces an editorial, artwork-led interface: local listening-statistics Bento, selectable Recent/Recommended music collections, pinned current playback, asymmetric discovery and private recently played history, a cardless friend-activity empty state and a quieter Messages screen. Now Playing uses a large cover, artwork-derived colors, an open seek area and a separate floating transport island. Original wave branding, Manrope typography and selective glass connect the screens. Full/Reduced/Minimal effects, large-text layouts and bounded phone/tablet content are included. Live YouTube Music search and Media3 background playback, queue editing and paused restoration remain connected. Recommendations can use the newest local listening identity; history can be cleared in Profile. Authentication, saved-library and social/messaging backends remain future milestones. This is a development preview; physical audio, headset/background behavior, TalkBack and frame/battery checks still need device verification. See [BUILD_REPORT.md](BUILD_REPORT.md) and [ROADMAP.md](ROADMAP.md).
 Project folder: `C:/Users/laksh/OneDrive/Documents/ChatGPT/Onda`.
+
+## UI preview
+
+Production Compose components rendered on the host with offline test artwork and metadata. The app uses live provider results.
+
+| Home | Player |
+| --- | --- |
+| ![Onda Home](docs/ui-preview/home-dark.png) | ![Onda player](docs/ui-preview/player-dark.png) |
+
+Messages preview: [native host render](docs/ui-preview/messages-dark.png). These are Robolectric/Roborazzi host captures, not emulator or physical-device screenshots.
 
 ## Build
 
@@ -22,7 +31,19 @@ This checkout also has ignored portable tools. Run `scripts/gradle-local.ps1 tes
 
 ## Configuration
 
-The initial app uses an explicitly local demo catalog. The optional Supabase factory is infrastructure only: this increment has no authentication flow or environment-to-client configuration wiring. At the auth milestone, supply an HTTPS project URL and public publishable key through validated injected configuration; never add a service-role or secret key. Composables never access backend configuration. Deployment and production credentials are outside this increment.
+UI host renders and interaction/material checks use Robolectric with Roborazzi. Run `:app:testDebugUnitTest --tests '*LiquidGlassUiTest'`; PNGs appear in `app/build/reports/ui/` and CI's verification-reports artifact. Artwork/metadata in these renders are offline test fixtures; production uses the live provider.
+
+The app uses NewPipeExtractor v0.26.5 through an isolated adapter; no API key is required. It is an unofficial integration, so upstream changes, region restrictions or unavailable tracks can cause explicit failures. Search is limited to songs; album, artist and playlist detail remain unsupported. Stream URLs are resolved just before playback and never saved in queue snapshots. The metadata-only demo is retained as a fixture and is not the production binding.
+
+The optional Supabase factory is infrastructure only: no authentication or app configuration wiring exists yet. At the auth milestone, supply an HTTPS project URL and public publishable key through validated injected configuration; never add a service-role or secret key.
+
+Live provider tests are separate from ordinary CI because they depend on the upstream service:
+
+```powershell
+$env:ONDA_LIVE_PROVIDER_TEST = 'true'
+.\scripts\gradle-local.ps1 :data:music:test --tests '*YoutubeLiveSmokeTest'
+Remove-Item Env:ONDA_LIVE_PROVIDER_TEST
+```
 
 ## Engineering documents
 
@@ -30,10 +51,10 @@ The original user requirements are preserved in [docs/PRODUCT_BRIEF.md](docs/PRO
 
 - [ARCHITECTURE.md](ARCHITECTURE.md): boundaries, music source, playback, social, messaging, offline behavior.
 - [DATABASE.md](DATABASE.md): server schema plan, authorization, policy test matrix, local cache.
-- [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md): visual hierarchy, tokens, effects, accessibility.
+- [DESIGN.md](DESIGN.md) and [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md): visual hierarchy, tokens, effects, accessibility.
 - [RECOMMENDATIONS.md](RECOMMENDATIONS.md): transparent hybrid ranking, taste, privacy, tests.
 - [ROADMAP.md](ROADMAP.md): phased scope and acceptance gates.
 
 ## Reference and ownership
 
-LastWave is a GPL-3.0 reference project. No LastWave code, branding, assets, or layouts are incorporated. See [references](RECONNAISSANCE.md#reference-review) for the inspected sources. This repository does not yet grant a distribution license for original application code; select one before public distribution. Third-party dependency licenses remain applicable. A future provider dependency must receive a specific license and compatibility review before incorporation.
+Original Onda code is licensed under [GNU GPL version 3](LICENSE), as approved by the project owner. See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for dependency licenses and source. Each APK release links its corresponding source tag; license texts/notices are also packaged in the APK. The owner approved closer LastWave screen structures. Home and player hierarchy are adapted with GPL-3.0 attribution in THIRD_PARTY_NOTICES.md; Onda retains its name, wave identity and selective glass. LastWave branding, album artwork and audio are not bundled.

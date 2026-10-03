@@ -15,4 +15,5 @@ dependencies {
     api(platform(libs.compose.bom))
     api(libs.compose.material)
     api(libs.compose.ui)
+    implementation(libs.haze)
 }

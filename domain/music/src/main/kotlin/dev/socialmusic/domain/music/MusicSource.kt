@@ -16,4 +16,5 @@ interface MusicSource {
 sealed class MusicSourceException(message: String) : Exception(message) {
     class NotFound : MusicSourceException("Music entity not found")
     class StreamUnavailable : MusicSourceException("Audio unavailable for this source")
+    class ProviderUnavailable : MusicSourceException("Music provider unavailable. Please try again.")
 }

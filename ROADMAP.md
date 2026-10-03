@@ -2,7 +2,7 @@
 
 Initial task: reconnaissance -> architecture documents -> begin Phase 1. Status is evidence-based; planned product features are not marked complete because interfaces exist.
 
-Current status: Phase 0 documents are created; the first Phase 1 foundation increment is implemented and host-verified. Tests, debug assemble and lint pass; device UI/storage/accessibility checks are unperformed. Phase 2 is not started. [BUILD_REPORT.md](BUILD_REPORT.md) records the evidence and limits.
+Current status: Phase 1 foundation is host-verified. The Phase 2 playback implementation and song-search portion of Phase 3 are implemented: NewPipe provider, one service-owned Media3 player, queue, mini/full controls, debounced search and paused restoration. The 0.4.0 frontend adapts LastWave's Home/player hierarchy with Onda branding, selective glass, artwork colors, responsive navigation and private recent listening. Bounded history implements part of Phase 4; cover-color extraction and system-aware haptics implement part of Phase 10. These additions do not complete either phase. Host UI renders and interaction checks complement provider/timeline/storage tests. Physical playback/background/focus/headset, TalkBack and frame/battery gates remain open; album/artist details, saved-library, authentication and social/messaging backends remain future work. [BUILD_REPORT.md](BUILD_REPORT.md) records the evidence and limits.
 
 | Phase | Deliverable | Gate before progression |
 | --- | --- | --- |

@@ -1,6 +1,6 @@
 # Recommendations and taste profiles
 
-Status: V1 design, not a running ranking service. Start with an explainable hybrid; collect no behavioral data before consent/settings and backend isolation exist.
+Status: V1 backend ranking/taste design, not a running ranking service. Onda 0.4.0 implements separate private listening continuity: up to 20 unique recent songs on the device, with a clear action in Profile. The newest track identity can seed an upstream recommendation request on catalog refresh. There are no affinity scores, progress-tick events, cross-user signals or cloud history. The planned behavioral-event pipeline below requires consent/settings and backend isolation before collection.
 
 ## Ownership and pipeline
 

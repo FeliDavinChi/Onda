@@ -1,14 +1,14 @@
 # Architecture
 
-Status: proposed product architecture plus Phase 1 foundation scope. Music is the shared object across catalog, player, library, recommendations, activity and conversations.
+Status: implemented foundation, provider/song search, playback, private recent listening and artwork-derived UI colors. Device playback gates and backend/social/saved-library features remain open. Music is the shared object across catalog, player, library, recommendations, activity and conversations.
 
 ## Decisions and alternatives
 
-Use a new Kotlin Android repository with a few real module boundaries. Extending VoiceNotes would couple unrelated runtimes and data. Forking LastWave would accelerate playback but import a large surface and GPL obligations; it is not selected. Creating every suggested feature as a module now would inflate build/configuration overhead. Add modules when features need independent ownership.
+Use a separate Kotlin Android repository with a few real module boundaries. Extending VoiceNotes would couple unrelated runtimes and data. Onda retains its own playback and data contracts; the owner approved GPL-3.0 and adaptation of LastWave's Home/player structures for the 0.4.0 frontend. The pinned reference and attribution are in THIRD_PARTY_NOTICES.md. Add modules when features need independent ownership.
 
 ## Module direction
 
-`app` owns launch, navigation and Hilt composition. `core:model` owns immutable provider-independent music/social/playback types. `domain:music` owns `MusicSource`. `data:music` implements demo source and later isolated providers. `core:common` holds state/configuration types with no Android dependency. `core:database` owns Room cache entities/DAO/schema. `core:network` owns Ktor/Supabase creation and DTO boundaries. `core:designsystem` owns Compose theme/tokens/glass.
+`app` owns launch, navigation and Hilt composition. `core:model` owns immutable provider-independent music/social/playback types. `domain:music` owns `MusicSource` and `PlaybackController`. `data:music` isolates NewPipe extraction/HTTP/mapping; the demo is test support. `core:playback` owns the sole ExoPlayer/MediaSessionService, session controller, validated commands, cancellable stream resolver and process-wide ordered private snapshots. `core:common` holds state/configuration types with no Android dependency. `core:database` owns Room cache entities/DAO/schema. `core:network` owns Ktor/Supabase creation and DTO boundaries. `core:designsystem` owns Compose theme/tokens/glass.
 
 Dependencies flow UI -> repository/contract -> implementation -> infrastructure. Models have no Android, provider, Supabase or UI dependencies. Feature packages contain screen/ViewModel/state, not independent Track variants. Introduce repositories/use cases only for actual coordination or business rules; do not wrap one call in multiple abstractions.
 
@@ -31,6 +31,14 @@ One ExoPlayer and MediaSession live inside PlaybackService (`MediaSessionService
 Operations: play/pause/resume/seek/previous/next/shuffle/repeat/add/play-next/move/remove. All queue edits are serialized and validated against stable occurrence IDs. MediaSession commands from notification/headset/Bluetooth and in-app UI update the same state. Handle audio focus, noisy output, service/controller lifecycle, buffering, error recovery and stream expiration. Progress updates are local, collected only while needed; never send each tick to the server. Restore on explicit user action, never autoplay on launch.
 
 App shell owns MiniPlayer outside tab routes. FullPlayer is an overlay route above the same state. Track playback from chat, search or activity invokes the same controller. Shared bounds and artwork identity give mini/full continuity. Palette extraction is cached by artwork identity and bounded; unavailable artwork uses accessible fallback colors.
+
+The implemented artwork theme decodes a 64px cover through the shared Coil loader, caches at most 24 color results and checks contrast for text and controls in both themes. Cancellation prevents old artwork from updating a newer track. Full effects animate color over 220ms; Reduced applies it immediately; Minimal skips extraction and uses the brand palette. Presentation never creates another audio player.
+
+## Private listening continuity
+
+A process-lifetime observer records the existing player's audible, non-buffering state once per queue occurrence or resumed listen. Position ticks, buffering and paused queue restoration do not write history. Preferences DataStore holds at most 20 unique recent tracks and 128KiB of sanitized metadata; no stream URLs or arbitrary provider metadata are retained. The observer tolerates IO write failures without interrupting playback. Profile provides a confirmed clear action, and app backup/device-transfer exclusions cover this private data.
+
+Home displays bounded recent-song and known-artist counts, a Recent/Recommended selector and the existing playing track pinned above plain music rows. Opening that pin preserves the active queue and position. Catalog refresh uses the newest local track identity as an upstream recommendation seed; this is not the planned backend ranking/taste service.
 
 ## Database and offline plan
 

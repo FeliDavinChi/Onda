@@ -9,3 +9,6 @@ local.properties
 *.keystore
 *.jks
 captures/
+
+.impeccable/review/
+.impeccable/config.local.json

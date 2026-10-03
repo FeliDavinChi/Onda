@@ -1,0 +1,729 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-03T15:19:43.223Z",
+  "title": "Design System: Onda",
+  "extensions": {
+    "colorMeta": {
+      "dark-mint": {
+        "role": "primary",
+        "displayName": "Dark Mint",
+        "tonalRamp": [
+          "oklch(15.00% 0.0706 169.72)",
+          "oklch(26.43% 0.0706 169.72)",
+          "oklch(37.86% 0.0706 169.72)",
+          "oklch(49.29% 0.0706 169.72)",
+          "oklch(60.71% 0.0706 169.72)",
+          "oklch(72.14% 0.0706 169.72)",
+          "oklch(83.57% 0.0706 169.72)",
+          "oklch(95.00% 0.0706 169.72)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "mint-content": {
+        "role": "primary",
+        "displayName": "Mint Content",
+        "tonalRamp": [
+          "oklch(15.00% 0.0530 164.90)",
+          "oklch(26.43% 0.0530 164.90)",
+          "oklch(37.86% 0.0530 164.90)",
+          "oklch(49.29% 0.0530 164.90)",
+          "oklch(60.71% 0.0530 164.90)",
+          "oklch(72.14% 0.0530 164.90)",
+          "oklch(83.57% 0.0530 164.90)",
+          "oklch(95.00% 0.0530 164.90)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "dark-primary-container": {
+        "role": "primary",
+        "displayName": "Dark Primary Container",
+        "tonalRamp": [
+          "oklch(15.00% 0.0519 168.25)",
+          "oklch(26.43% 0.0519 168.25)",
+          "oklch(37.86% 0.0519 168.25)",
+          "oklch(49.29% 0.0519 168.25)",
+          "oklch(60.71% 0.0519 168.25)",
+          "oklch(72.14% 0.0519 168.25)",
+          "oklch(83.57% 0.0519 168.25)",
+          "oklch(95.00% 0.0519 168.25)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "dark-container-content": {
+        "role": "primary",
+        "displayName": "Dark Container Content",
+        "tonalRamp": [
+          "oklch(15.00% 0.0375 169.09)",
+          "oklch(26.43% 0.0375 169.09)",
+          "oklch(37.86% 0.0375 169.09)",
+          "oklch(49.29% 0.0375 169.09)",
+          "oklch(60.71% 0.0375 169.09)",
+          "oklch(72.14% 0.0375 169.09)",
+          "oklch(83.57% 0.0375 169.09)",
+          "oklch(95.00% 0.0375 169.09)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "dark-secondary": {
+        "role": "secondary",
+        "displayName": "Dark Secondary",
+        "tonalRamp": [
+          "oklch(15.00% 0.0373 230.28)",
+          "oklch(26.43% 0.0373 230.28)",
+          "oklch(37.86% 0.0373 230.28)",
+          "oklch(49.29% 0.0373 230.28)",
+          "oklch(60.71% 0.0373 230.28)",
+          "oklch(72.14% 0.0373 230.28)",
+          "oklch(83.57% 0.0373 230.28)",
+          "oklch(95.00% 0.0373 230.28)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "dark-secondary-content": {
+        "role": "secondary",
+        "displayName": "Dark Secondary Content",
+        "tonalRamp": [
+          "oklch(15.00% 0.0409 227.35)",
+          "oklch(26.43% 0.0409 227.35)",
+          "oklch(37.86% 0.0409 227.35)",
+          "oklch(49.29% 0.0409 227.35)",
+          "oklch(60.71% 0.0409 227.35)",
+          "oklch(72.14% 0.0409 227.35)",
+          "oklch(83.57% 0.0409 227.35)",
+          "oklch(95.00% 0.0409 227.35)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "ink-background": {
+        "role": "neutral",
+        "displayName": "Ink Background",
+        "tonalRamp": [
+          "oklch(15.00% 0.0120 254.12)",
+          "oklch(26.43% 0.0120 254.12)",
+          "oklch(37.86% 0.0120 254.12)",
+          "oklch(49.29% 0.0120 254.12)",
+          "oklch(60.71% 0.0120 254.12)",
+          "oklch(72.14% 0.0120 254.12)",
+          "oklch(83.57% 0.0120 254.12)",
+          "oklch(95.00% 0.0120 254.12)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "ink-surface": {
+        "role": "neutral",
+        "displayName": "Ink Surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.0200 254.86)",
+          "oklch(26.43% 0.0200 254.86)",
+          "oklch(37.86% 0.0200 254.86)",
+          "oklch(49.29% 0.0200 254.86)",
+          "oklch(60.71% 0.0200 254.86)",
+          "oklch(72.14% 0.0200 254.86)",
+          "oklch(83.57% 0.0200 254.86)",
+          "oklch(95.00% 0.0200 254.86)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "ink-surface-variant": {
+        "role": "neutral",
+        "displayName": "Ink Surface Variant",
+        "tonalRamp": [
+          "oklch(15.00% 0.0234 253.63)",
+          "oklch(26.43% 0.0234 253.63)",
+          "oklch(37.86% 0.0234 253.63)",
+          "oklch(49.29% 0.0234 253.63)",
+          "oklch(60.71% 0.0234 253.63)",
+          "oklch(72.14% 0.0234 253.63)",
+          "oklch(83.57% 0.0234 253.63)",
+          "oklch(95.00% 0.0234 253.63)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "ink-text": {
+        "role": "neutral",
+        "displayName": "Ink Text",
+        "tonalRamp": [
+          "oklch(15.00% 0.0042 236.50)",
+          "oklch(26.43% 0.0042 236.50)",
+          "oklch(37.86% 0.0042 236.50)",
+          "oklch(49.29% 0.0042 236.50)",
+          "oklch(60.71% 0.0042 236.50)",
+          "oklch(72.14% 0.0042 236.50)",
+          "oklch(83.57% 0.0042 236.50)",
+          "oklch(95.00% 0.0042 236.50)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "ink-text-secondary": {
+        "role": "neutral",
+        "displayName": "Ink Text Secondary",
+        "tonalRamp": [
+          "oklch(15.00% 0.0158 257.20)",
+          "oklch(26.43% 0.0158 257.20)",
+          "oklch(37.86% 0.0158 257.20)",
+          "oklch(49.29% 0.0158 257.20)",
+          "oklch(60.71% 0.0158 257.20)",
+          "oklch(72.14% 0.0158 257.20)",
+          "oklch(83.57% 0.0158 257.20)",
+          "oklch(95.00% 0.0158 257.20)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "dark-outline": {
+        "role": "neutral",
+        "displayName": "Dark Outline",
+        "tonalRamp": [
+          "oklch(15.00% 0.0171 186.27)",
+          "oklch(26.43% 0.0171 186.27)",
+          "oklch(37.86% 0.0171 186.27)",
+          "oklch(49.29% 0.0171 186.27)",
+          "oklch(60.71% 0.0171 186.27)",
+          "oklch(72.14% 0.0171 186.27)",
+          "oklch(83.57% 0.0171 186.27)",
+          "oklch(95.00% 0.0171 186.27)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "dark-outline-variant": {
+        "role": "neutral",
+        "displayName": "Dark Outline Variant",
+        "tonalRamp": [
+          "oklch(15.00% 0.0173 185.07)",
+          "oklch(26.43% 0.0173 185.07)",
+          "oklch(37.86% 0.0173 185.07)",
+          "oklch(49.29% 0.0173 185.07)",
+          "oklch(60.71% 0.0173 185.07)",
+          "oklch(72.14% 0.0173 185.07)",
+          "oklch(83.57% 0.0173 185.07)",
+          "oklch(95.00% 0.0173 185.07)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "light-mint": {
+        "role": "primary",
+        "displayName": "Light Mint",
+        "tonalRamp": [
+          "oklch(15.00% 0.0865 163.89)",
+          "oklch(26.43% 0.0865 163.89)",
+          "oklch(37.86% 0.0865 163.89)",
+          "oklch(49.29% 0.0865 163.89)",
+          "oklch(60.71% 0.0865 163.89)",
+          "oklch(72.14% 0.0865 163.89)",
+          "oklch(83.57% 0.0865 163.89)",
+          "oklch(95.00% 0.0865 163.89)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "light-primary-container": {
+        "role": "primary",
+        "displayName": "Light Primary Container",
+        "tonalRamp": [
+          "oklch(15.00% 0.0301 167.44)",
+          "oklch(26.43% 0.0301 167.44)",
+          "oklch(37.86% 0.0301 167.44)",
+          "oklch(49.29% 0.0301 167.44)",
+          "oklch(60.71% 0.0301 167.44)",
+          "oklch(72.14% 0.0301 167.44)",
+          "oklch(83.57% 0.0301 167.44)",
+          "oklch(95.00% 0.0301 167.44)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "light-secondary": {
+        "role": "secondary",
+        "displayName": "Light Secondary",
+        "tonalRamp": [
+          "oklch(15.00% 0.0530 229.20)",
+          "oklch(26.43% 0.0530 229.20)",
+          "oklch(37.86% 0.0530 229.20)",
+          "oklch(49.29% 0.0530 229.20)",
+          "oklch(60.71% 0.0530 229.20)",
+          "oklch(72.14% 0.0530 229.20)",
+          "oklch(83.57% 0.0530 229.20)",
+          "oklch(95.00% 0.0530 229.20)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "paper-background": {
+        "role": "neutral",
+        "displayName": "Paper Background",
+        "tonalRamp": [
+          "oklch(15.00% 0.0025 228.78)",
+          "oklch(26.43% 0.0025 228.78)",
+          "oklch(37.86% 0.0025 228.78)",
+          "oklch(49.29% 0.0025 228.78)",
+          "oklch(60.71% 0.0025 228.78)",
+          "oklch(72.14% 0.0025 228.78)",
+          "oklch(83.57% 0.0025 228.78)",
+          "oklch(95.00% 0.0025 228.78)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "paper-surface": {
+        "role": "neutral",
+        "displayName": "Paper Surface",
+        "tonalRamp": [
+          "oklch(15.00% 0.0000 0)",
+          "oklch(26.43% 0.0000 0)",
+          "oklch(37.86% 0.0000 0)",
+          "oklch(49.29% 0.0000 0)",
+          "oklch(60.71% 0.0000 0)",
+          "oklch(72.14% 0.0000 0)",
+          "oklch(83.57% 0.0000 0)",
+          "oklch(95.00% 0.0000 0)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "paper-surface-variant": {
+        "role": "neutral",
+        "displayName": "Paper Surface Variant",
+        "tonalRamp": [
+          "oklch(15.00% 0.0076 228.86)",
+          "oklch(26.43% 0.0076 228.86)",
+          "oklch(37.86% 0.0076 228.86)",
+          "oklch(49.29% 0.0076 228.86)",
+          "oklch(60.71% 0.0076 228.86)",
+          "oklch(72.14% 0.0076 228.86)",
+          "oklch(83.57% 0.0076 228.86)",
+          "oklch(95.00% 0.0076 228.86)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "paper-text": {
+        "role": "neutral",
+        "displayName": "Paper Text",
+        "tonalRamp": [
+          "oklch(15.00% 0.0165 252.49)",
+          "oklch(26.43% 0.0165 252.49)",
+          "oklch(37.86% 0.0165 252.49)",
+          "oklch(49.29% 0.0165 252.49)",
+          "oklch(60.71% 0.0165 252.49)",
+          "oklch(72.14% 0.0165 252.49)",
+          "oklch(83.57% 0.0165 252.49)",
+          "oklch(95.00% 0.0165 252.49)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "paper-text-secondary": {
+        "role": "neutral",
+        "displayName": "Paper Text Secondary",
+        "tonalRamp": [
+          "oklch(15.00% 0.0249 250.72)",
+          "oklch(26.43% 0.0249 250.72)",
+          "oklch(37.86% 0.0249 250.72)",
+          "oklch(49.29% 0.0249 250.72)",
+          "oklch(60.71% 0.0249 250.72)",
+          "oklch(72.14% 0.0249 250.72)",
+          "oklch(83.57% 0.0249 250.72)",
+          "oklch(95.00% 0.0249 250.72)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "light-outline": {
+        "role": "neutral",
+        "displayName": "Light Outline",
+        "tonalRamp": [
+          "oklch(15.00% 0.0177 176.62)",
+          "oklch(26.43% 0.0177 176.62)",
+          "oklch(37.86% 0.0177 176.62)",
+          "oklch(49.29% 0.0177 176.62)",
+          "oklch(60.71% 0.0177 176.62)",
+          "oklch(72.14% 0.0177 176.62)",
+          "oklch(83.57% 0.0177 176.62)",
+          "oklch(95.00% 0.0177 176.62)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      },
+      "light-outline-variant": {
+        "role": "neutral",
+        "displayName": "Light Outline Variant",
+        "tonalRamp": [
+          "oklch(15.00% 0.0137 167.12)",
+          "oklch(26.43% 0.0137 167.12)",
+          "oklch(37.86% 0.0137 167.12)",
+          "oklch(49.29% 0.0137 167.12)",
+          "oklch(60.71% 0.0137 167.12)",
+          "oklch(72.14% 0.0137 167.12)",
+          "oklch(83.57% 0.0137 167.12)",
+          "oklch(95.00% 0.0137 167.12)"
+        ],
+        "rampSource": "Synthesized OKLCH panel preview only; not native tokens."
+      }
+    },
+    "typographyMeta": {
+      "headline-large": {
+        "displayName": "Headline Large",
+        "purpose": "Route headings, Onda wordmark, full-player track title and recent-artist count."
+      },
+      "headline-medium": {
+        "displayName": "Headline Medium",
+        "purpose": "Messages introduction."
+      },
+      "headline-small": {
+        "displayName": "Headline Small",
+        "purpose": "Queue heading."
+      },
+      "title-large": {
+        "displayName": "Title Large",
+        "purpose": "Section names."
+      },
+      "title-medium": {
+        "displayName": "Title Medium",
+        "purpose": "Pinned playback, settings and queue track titles."
+      },
+      "title-small": {
+        "displayName": "Title Small",
+        "purpose": "Track rows, discovery tiles and mini-player titles."
+      },
+      "body-large": {
+        "displayName": "Body Large",
+        "purpose": "Full-player artist and substantial empty-state description."
+      },
+      "body-medium": {
+        "displayName": "Body Medium",
+        "purpose": "Statistics labels, search text and supporting copy."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Compact artists, statistics scope and settings detail."
+      },
+      "label-large": {
+        "displayName": "Label Large",
+        "purpose": "Player context and native Material action labels."
+      },
+      "label-medium": {
+        "displayName": "Label Medium",
+        "purpose": "Elapsed/remaining time and compact queue context."
+      },
+      "label-small": {
+        "displayName": "Label Small",
+        "purpose": "Visible destination names and pinned/selected-row context."
+      },
+      "display-small": {
+        "displayName": "Display Small",
+        "purpose": "Emphasized recent-song count."
+      }
+    },
+    "shadows": [
+      {
+        "name": "Standard",
+        "value": "Compose shadowElevation: 2dp",
+        "purpose": "Native Standard material; no equivalent CSS shadow is asserted."
+      },
+      {
+        "name": "Elevated",
+        "value": "Compose shadowElevation: 8dp",
+        "purpose": "Native floating navigation and playback material."
+      },
+      {
+        "name": "Overlay",
+        "value": "Compose shadowElevation: 10dp",
+        "purpose": "Native per-window overlay material."
+      }
+    ],
+    "motion": [
+      {
+        "name": "cover-accent-full",
+        "value": "220ms tween",
+        "purpose": "Implemented artwork color transition in Full; rechecks contrast through the transition."
+      },
+      {
+        "name": "cover-accent-reduced",
+        "value": "0ms",
+        "purpose": "Instant artwork color change in Reduced."
+      },
+      {
+        "name": "minimal",
+        "value": "No extraction or animation",
+        "purpose": "ArtworkTheme returns base content before extraction/animation. No custom navigation/player timing is defined."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "expanded-rail",
+        "value": "width >= 840dp AND height >= 600dp"
+      },
+      {
+        "name": "short-window",
+        "value": "height < 500dp"
+      },
+      {
+        "name": "large-text",
+        "value": "fontScale >= 1.5"
+      },
+      {
+        "name": "dock-two-columns",
+        "value": "large text AND width < 340dp"
+      },
+      {
+        "name": "dock-three-columns",
+        "value": "large text AND 340dp <= width < 640dp"
+      },
+      {
+        "name": "dock-five-columns",
+        "value": "normal text OR width >= 640dp"
+      },
+      {
+        "name": "short-large-text-dock",
+        "value": "short window AND large text: scrollable row; 140dp destinations"
+      },
+      {
+        "name": "stack-home-statistics-selector-discovery",
+        "value": "available width < 320dp OR fontScale >= 1.5"
+      }
+    ],
+    "nativeGlass": {
+      "source": "core/designsystem/src/main/kotlin/dev/socialmusic/designsystem/GlassSurface.kt",
+      "units": "Android dp; tint and edge values are alpha fractions.",
+      "cornerRadius": "28dp",
+      "borderWidth": "1dp",
+      "full": {
+        "None": {
+          "tintAlpha": 1,
+          "edgeAlpha": 0,
+          "elevation": "0dp",
+          "blur": "0dp"
+        },
+        "Subtle": {
+          "tintAlpha": 0.9,
+          "edgeAlpha": 0.08,
+          "elevation": "0dp",
+          "blur": "12dp"
+        },
+        "Standard": {
+          "tintAlpha": 0.78,
+          "edgeAlpha": 0.14,
+          "elevation": "2dp",
+          "blur": "18dp"
+        },
+        "Elevated": {
+          "tintAlpha": 0.72,
+          "edgeAlpha": 0.22,
+          "elevation": "8dp",
+          "blur": "24dp"
+        },
+        "Overlay": {
+          "tintAlpha": 0.88,
+          "edgeAlpha": 0.24,
+          "elevation": "10dp",
+          "blur": "24dp"
+        }
+      },
+      "reduced": "For non-None materials: tint .94, elevation 0dp, blur 8dp; retain level edge alpha. None remains opaque with zero edge, blur and elevation.",
+      "minimal": "All levels: tint 1, edge 0, elevation 0dp, blur 0dp; no capture, wave backdrop decoration, artwork extraction/animation or tactileAction haptics.",
+      "edge": "Diagonal onSurface edge gradient: level edgeAlpha, .025, edgeAlpha * .5; 1dp stroke.",
+      "capture": "Only the quiet wave/artwork-colored backdrop; one owned Haze state per Android window. No capture of foreground content or other glass surfaces.",
+      "eligibility": "API33+ AND not low-RAM AND effects != Minimal. Otherwise the surface background is opaque.",
+      "opticalRefraction": false
+    },
+    "nativeLayout": {
+      "homeMaxWidth": "760dp",
+      "playerMaxWidth": "460dp",
+      "playerCoverMaxWidth": "380dp",
+      "transportMaxWidth": "420dp",
+      "miniPlayerDockMaxWidth": "640dp",
+      "railAllocation": "104dp; 136dp at fontScale >= 1.5",
+      "destinationMinHeight": "56dp",
+      "selectedIconHighlight": "48dp x 30dp; 18dp radius",
+      "ime": "Navigation hidden while IME is visible; reserve keyboard space.",
+      "shortLargeText": "Active destination requests bring-into-view.",
+      "homeSectionGap": "20dp",
+      "homeGutters": "24dp content; 16dp rows",
+      "statistics": "Bottom-aligned solid tiles; songs/artists width weights 1.4:1; gap 12dp; padding 20dp; value/label gap 4dp. Stack at large text or available width <320dp."
+    },
+    "nativeComponents": {
+      "minimumSizing": "Frontmatter button/field heights are observed minimums and transport width is a maximum. Play/pause, skip, pinned artwork and search sizes are explicit. Material3 supplies defaults and states where not overridden.",
+      "haptics": "tactileAction requests Android CLOCK_TICK for wrapped deliberate actions, respects system haptic setting, and is disabled in Minimal. No scrolling/seeking haptic loop; not every action is wrapped.",
+      "artwork": "64px software request; off-main extraction; 24-entry color-only cache; stale/cancelled result handling; brand fallback; 4.5:1 accent contrast against background/surface/variant/derived container.",
+      "home": {
+        "header": "Compact Onda mark/name with a 48dp Standard-glass search icon action, 24dp corners.",
+        "history": "Statistics exist only with private local history; at most 20 unique recent songs. Song count is retained history size. Artists count filters blank names and deduplicates by artist ID; no known artists displays a dash.",
+        "statistics": "Solid primary-container song tile (24dp corners, displaySmall count), solid surface artist tile (18dp corners, headlineLarge count); no glass or all-time-play claim.",
+        "collection": "Your mix: Recently played / Recommended. Defaults to Recently played when history exists; it is disabled without history. Native TextButton selector, 48dp minimum, 20dp expand icon; dropdown owns Overlay glass and options expose selected semantics.",
+        "pinned": "Existing current track first, 64dp artwork with 14dp corners, titleMedium metadata, visible In player, 48dp/22dp-corner play/pause. Metadata opens the player. Exclude the current track from ordinary collection and discovery rows.",
+        "rows": "Plain TrackRow entries: first four, Show all/Show less toggles; expansion resets on collection change.",
+        "afterRows": "Unequal discovery Bento, then truthful cardless friend activity.",
+        "scope": "No featured hero or horizontal history-artwork rail; no added social/auth/saved-library/messaging backend."
+      },
+      "player": {
+        "primary": "Separate Elevated island: previous/next FilledTonalIconButton 56dp with 20dp corners; PlayPauseButton 72dp with 22dp corners. Primary icon glyphs 28dp.",
+        "compact": "The same PlayPauseButton uses 48dp with 22dp corners in MiniPlayer and Home pinned row. It is a rounded square, not CircleShape.",
+        "secondary": "Separate cardless row: native shuffle control, real queue-count TextButton with 48dp minimum, native repeat control. Mode labels/semantics and active tint expose state.",
+        "seek": "Cardless seek with elapsed label left and negative remaining label right; remaining label announces time remaining. Slider state still describes position/duration; disabled without duration."
+      }
+    },
+    "browserPreview": {
+      "scope": "Self-contained source-derived silhouettes in the base dark palette with opaque material fallback. They do not reproduce native blur, Compose shadows, haptics, Android semantics or font scaling.",
+      "units": "One CSS pixel represents one unscaled dp/sp solely for this panel translation. Native production values are in DESIGN.md and source.",
+      "font": "Manrope family is requested; the browser panel uses sans-serif fallback if Manrope is not available. Native Android bundles the font.",
+      "states": "Material-like web state layers illustrate native interaction affordances; focus-visible retains the browser user-agent outline and is not a new native focus token.",
+      "tonalRamps": "Eight lightness steps at the extracted hue/chroma are synthesized in OKLCH only for swatch preview; they are not new native color tokens."
+    },
+    "evidence": {
+      "productionSources": [
+        "core/designsystem/src/main/kotlin/dev/socialmusic/designsystem/Theme.kt",
+        "core/designsystem/src/main/kotlin/dev/socialmusic/designsystem/GlassSurface.kt",
+        "core/designsystem/src/main/kotlin/dev/socialmusic/designsystem/WindowGlassSurface.kt",
+        "core/designsystem/src/main/kotlin/dev/socialmusic/designsystem/WaveBackdrop.kt",
+        "core/designsystem/src/main/kotlin/dev/socialmusic/designsystem/OndaMark.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/HomeScreen.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/PlayerUi.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/ArtworkColors.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/ArtworkTheme.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/SocialMusicApp.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/EmptyScreens.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/ExploreScreen.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/TrackComponents.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/TactileAction.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/ui/QueueSheet.kt",
+        "app/src/main/kotlin/dev/socialmusic/app/data/ListeningHistory.kt"
+      ],
+      "fixtures": "20 offline native Robolectric/Roborazzi production-component renders in .impeccable/review/*.png, including final LastWave-aligned Home/player hierarchy.",
+      "physicalAcceptance": "Pending emulator/device, TalkBack, audio, haptic, frame and battery checks; host/source evidence does not imply physical acceptance.",
+      "contactSheet": "build/identity-work/evidence.jpg",
+      "designAuthority": [
+        "PRODUCT.md",
+        "docs/superpowers/specs/2026-10-03-editorial-onda-design.md"
+      ],
+      "lastWaveReference": {
+        "repository": "https://github.com/Clash-Projects/LastWave-native",
+        "revision": "ac19d0634e2d9d0f9ea47d4720b46ce53722f757",
+        "license": "GPL-3.0",
+        "pinnedSource": "build/identity-work/lastwave/HomeScreen.kt",
+        "referenceRecord": "build/identity-work/lastwave/reference.json",
+        "attribution": "THIRD_PARTY_NOTICES.md",
+        "licenseFile": "third_party/licenses/LastWave-GPL-3.0.txt",
+        "scope": "Approved Home statistics/selector/pinned-list and player primary/secondary hierarchy adaptation. Onda branding, typography, colors and native adaptive navigation retained. Reference album artwork/audio are not app assets."
+      }
+    }
+  },
+  "components": [
+    {
+      "name": "Tonal Action",
+      "kind": "button",
+      "refersTo": "button-tonal",
+      "description": "Real discovery/play actions use native FilledTonalButton with a 48dp minimum. Browser focus-visible uses the user agent outline; native interaction states are provided by Compose Material3. This is a source-derived web specimen, not a native screenshot.",
+      "html": "<button class=\"ds-tonal\">Find music</button>",
+      "css": ".ds-tonal{font-family:Manrope,sans-serif;min-height:48px;padding:8px 24px;border:0;border-radius:999px;background:#20483A;color:#D6F6E9;font-size:14px;line-height:20px;font-weight:600;cursor:pointer}.ds-tonal:hover{background:color-mix(in srgb,#D6F6E9 8%,#20483A)}.ds-tonal:focus-visible{outline:auto}.ds-tonal:active{background:color-mix(in srgb,#D6F6E9 10%,#20483A)}.ds-tonal:disabled{cursor:default;opacity:.38}"
+    },
+    {
+      "name": "Text Action",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "Cardless supporting discovery, retry and history actions use native TextButton. Browser focus-visible uses the user agent outline; native interaction states are provided by Compose Material3. This is a source-derived web specimen, not a native screenshot.",
+      "html": "<button class=\"ds-text\">Find music</button>",
+      "css": ".ds-text{font-family:Manrope,sans-serif;min-height:48px;padding:8px 12px;border:0;border-radius:999px;background:transparent;color:#A8E6CF;font-size:14px;line-height:20px;font-weight:600;cursor:pointer}.ds-text:hover{background:rgba(168,230,207,.08)}.ds-text:focus-visible{outline:auto}.ds-text:active{background:rgba(168,230,207,.10)}"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "Explore's transparent native input inside Standard glass. This specimen shows the opaque fallback silhouette. Capture, blur and edge treatment are recorded in nativeGlass rather than simulated with CSS backdrop-filter.",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L19.49 21 21 19.49 15.5 14zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z\"/></svg><input class=\"ds-search-input\" aria-label=\"Search music\" placeholder=\"Search music\" type=\"search\"></label>",
+      "css": ".ds-search{display:flex;align-items:center;gap:12px;min-height:60px;padding:0 16px;border-radius:28px;background:#1B222B;color:#A8E6CF}.ds-search svg{width:24px;height:24px;fill:currentColor;flex-shrink:0}.ds-search-input{font-family:Manrope,sans-serif;width:100%;min-width:0;padding:12px 0;border:0;background:transparent;color:#F1F4F6;font-size:14px;line-height:21px}.ds-search-input::placeholder{color:#CDD4DE}.ds-search-input:hover{cursor:text}.ds-search-input:focus-visible{outline:auto}"
+    },
+    {
+      "name": "Destination Dock",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "All five names remain visible; selected state has text and semantics plus a compact container highlight. Browser specimen illustrates the five-column dock and opaque fallback; native adaptive dimensions are in breakpoints.",
+      "html": "<nav class=\"ds-dock\" aria-label=\"Main destinations\"><button class=\"ds-destination\" role=\"tab\" aria-selected=\"true\"><span class=\"ds-destination-icon\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3 2 12h3v8h6v-6h2v6h6v-8h3L12 3zm5 15h-2v-6H9v6H7v-7.81l5-4.5 5 4.5V18z\"/></svg></span><span>Home</span></button><button class=\"ds-destination\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-destination-icon\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm-5.5-2.5 8.19-3.31L18 6.5l-8.19 3.31L6.5 17.5zM12 10.5a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z\"/></svg></span><span>Explore</span></button><button class=\"ds-destination\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-destination-icon\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12zm-2-9h-3v4.18c-.31-.11-.65-.18-1-.18a3 3 0 1 0 3 3V9h1V7z\"/></svg></span><span>Library</span></button><button class=\"ds-destination\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-destination-icon\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12zM6 7h12v2H6V7zm0 4h8v2H6v-2z\"/></svg></span><span>Messages</span></button><button class=\"ds-destination\" role=\"tab\" aria-selected=\"false\"><span class=\"ds-destination-icon\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm0-6a2 2 0 1 1 0 4 2 2 0 0 1 0-4zm0 8c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2s5.78 1.28 6 2H6z\"/></svg></span><span>Profile</span></button></nav>",
+      "css": ".ds-dock{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));max-width:640px;padding:8px;border-radius:28px;background:#1B222B}.ds-destination{font-family:Manrope,sans-serif;display:flex;flex-direction:column;align-items:center;gap:4px;min-height:56px;padding:4px 0;border:0;background:transparent;color:#CDD4DE;font-size:11px;line-height:16px;font-weight:500;cursor:pointer}.ds-destination-icon{display:grid;place-items:center;width:48px;height:30px;border-radius:18px}.ds-destination-icon svg{width:22px;height:22px;fill:currentColor}.ds-destination[aria-selected=\"true\"]{color:#F1F4F6}.ds-destination[aria-selected=\"true\"] .ds-destination-icon{background:#20483A;color:#A8E6CF}.ds-destination:hover{background:rgba(241,244,246,.08)}.ds-destination:focus-visible{outline:auto}.ds-destination:active{background:rgba(241,244,246,.10)}"
+    },
+    {
+      "name": "Genre Suggestion",
+      "kind": "chip",
+      "refersTo": "suggestion-chip",
+      "description": "Explore's native SuggestionChip supplies a real query action when the query is blank. Material3 defaults supply the native outline and small corner shape.",
+      "html": "<button class=\"ds-chip\">Indie</button>",
+      "css": ".ds-chip{font-family:Manrope,sans-serif;min-height:48px;padding:6px 16px;border:1px solid #63716F;border-radius:8px;background:transparent;color:#F1F4F6;font-size:14px;line-height:20px;font-weight:600;cursor:pointer}.ds-chip:hover{background:rgba(241,244,246,.08)}.ds-chip:focus-visible{outline:auto}.ds-chip:active{background:rgba(241,244,246,.10)}"
+    },
+    {
+      "name": "Effects Settings Container",
+      "kind": "card",
+      "refersTo": "settings-container",
+      "description": "Opaque functional settings grouping with native radio semantics; it does not prescribe cards for music/social sections.",
+      "html": "<div class=\"ds-settings\" role=\"radiogroup\" aria-label=\"Visual effects\"><label class=\"ds-setting\"><input class=\"ds-radio\" type=\"radio\" name=\"ds-effects\" checked ><span>Full</span></label><label class=\"ds-setting\"><input class=\"ds-radio\" type=\"radio\" name=\"ds-effects\" ><span>Reduced</span></label><label class=\"ds-setting\"><input class=\"ds-radio\" type=\"radio\" name=\"ds-effects\" ><span>Minimal</span></label></div>",
+      "css": ".ds-settings{font-family:Manrope,sans-serif;border-radius:20px;background:#1B222B;color:#F1F4F6}.ds-setting{display:flex;align-items:center;gap:8px;padding:14px 12px;font-size:16px;line-height:23px;font-weight:600;cursor:pointer}.ds-radio{width:24px;height:24px;accent-color:#A8E6CF}.ds-setting:hover{background:rgba(241,244,246,.08)}.ds-radio:focus-visible{outline:auto}.ds-setting:active{background:rgba(241,244,246,.10)}"
+    },
+    {
+      "name": "Home Mix and Pinned Playback",
+      "kind": "custom",
+      "refersTo": "pinned-playback",
+      "description": "Cardless Your mix collection with native Recently played/Recommended selector and current track pinned first. Placeholder track text/art represents a specimen, not catalog or social data. Browser details illustrates the separately scoped native glass menu; Home's actual ordinary rows use the reusable transparent TrackRow.",
+      "html": "<section class=\"ds-home-mix\"><div class=\"ds-mix-heading\"><span class=\"ds-mix-title\">Your mix</span><details class=\"ds-mix-choice\"><summary>Recently played <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m7 10 5 5 5-5H7z\"/></svg></summary><div class=\"ds-mix-menu\" role=\"menu\"><button role=\"menuitemradio\" aria-checked=\"true\">Recently played</button><button role=\"menuitemradio\" aria-checked=\"false\">Recommended</button></div></details></div><div class=\"ds-pinned-row\"><button class=\"ds-pinned-metadata\" aria-label=\"Open player\"><span class=\"ds-pinned-cover\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z\"/></svg></span><span class=\"ds-pinned-text\"><span class=\"ds-pinned-title\">Track title</span><span class=\"ds-pinned-artist\">Artist</span><span class=\"ds-pinned-state\">In player</span></span></button><button class=\"ds-pinned-play\" aria-label=\"Play\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 5v14l11-7L8 5z\"/></svg></button></div><button class=\"ds-track\" aria-label=\"Play track\"><span class=\"ds-cover\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z\"/></svg></span><span class=\"ds-track-meta\"><span class=\"ds-track-title\">Track title</span><span class=\"ds-track-artist\">Artist</span></span></button></section>",
+      "css": ".ds-home-mix{font-family:Manrope,sans-serif;color:#F1F4F6}.ds-mix-heading{display:flex;justify-content:space-between;align-items:center;gap:12px}.ds-mix-title{font-size:21px;line-height:28px;font-weight:600;letter-spacing:-.3px}.ds-mix-choice{position:relative}.ds-mix-choice summary{display:flex;align-items:center;gap:6px;min-height:48px;color:#A8E6CF;font-size:14px;line-height:20px;font-weight:600;cursor:pointer;list-style:none}.ds-mix-choice summary svg{width:20px;height:20px;fill:currentColor}.ds-mix-menu{position:absolute;right:0;min-width:180px;border-radius:28px;background:#1B222B;z-index:1}.ds-mix-menu button{display:block;width:100%;min-height:48px;padding:8px 16px;border:0;background:transparent;color:#F1F4F6;text-align:left;font-family:Manrope,sans-serif;font-size:14px;line-height:21px;cursor:pointer}.ds-pinned-row{display:flex;align-items:center;gap:12px;padding:8px;background:transparent}.ds-pinned-metadata{display:flex;align-items:center;gap:12px;flex:1;min-width:0;padding:0;border:0;background:transparent;color:#F1F4F6;text-align:left;font-family:Manrope,sans-serif;cursor:pointer}.ds-pinned-cover{display:grid;place-items:center;flex-shrink:0;width:64px;height:64px;border-radius:14px;background:#29323D;color:#CDD4DE}.ds-pinned-cover svg,.ds-cover svg{width:32px;height:32px;fill:currentColor}.ds-pinned-text{display:flex;flex-direction:column;gap:3px;min-width:0}.ds-pinned-title{font-size:16px;line-height:23px;font-weight:600}.ds-pinned-artist{font-size:12px;line-height:18px;color:#CDD4DE}.ds-pinned-state{font-size:11px;line-height:16px;font-weight:500;color:#A8E6CF}.ds-pinned-play{display:grid;place-items:center;flex-shrink:0;width:48px;height:48px;padding:0;border:0;border-radius:22px;background:#A8E6CF;color:#0C3526;cursor:pointer}.ds-pinned-play svg{width:28px;height:28px;fill:currentColor}.ds-track{font-family:Manrope,sans-serif;display:flex;align-items:center;gap:12px;width:100%;padding:8px 0 8px 8px;border:0;border-radius:16px;background:transparent;color:#F1F4F6;text-align:left;cursor:pointer}.ds-cover{display:grid;place-items:center;flex-shrink:0;width:54px;height:54px;border-radius:12px;background:#29323D;color:#CDD4DE}.ds-track-meta{display:flex;flex-direction:column;gap:3px}.ds-track-title{font-size:14px;line-height:20px;font-weight:600}.ds-track-artist{font-size:12px;line-height:18px;font-weight:400;color:#CDD4DE}.ds-mix-choice summary:hover,.ds-mix-menu button:hover,.ds-pinned-metadata:hover,.ds-track:hover{background:rgba(241,244,246,.08)}.ds-pinned-play:hover{background:color-mix(in srgb,#0C3526 8%,#A8E6CF)}.ds-mix-choice summary:focus-visible,.ds-mix-menu button:focus-visible,.ds-pinned-metadata:focus-visible,.ds-pinned-play:focus-visible,.ds-track:focus-visible{outline:auto}.ds-pinned-play:active{background:color-mix(in srgb,#0C3526 10%,#A8E6CF)}.ds-mix-menu button:active,.ds-track:active{background:rgba(241,244,246,.10)}"
+    },
+    {
+      "name": "Primary Transport and Lower Modes",
+      "kind": "custom",
+      "refersTo": "transport-island",
+      "description": "Three primary rounded-square actions inside a separate Elevated island, followed by cardless shuffle/real queue-count/repeat. This opaque browser fallback specimen uses a zero-track queue label; the native app derives the actual count. Native glass depth is recorded separately.",
+      "html": "<section class=\"ds-player-controls\"><div class=\"ds-transport\" role=\"group\" aria-label=\"Primary player controls\"><button class=\"ds-transport-step\" aria-label=\"Previous track\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M6 6h2v12H6V6zm3.5 6 8.5 6V6l-8.5 6z\"/></svg></button><button class=\"ds-play\" aria-label=\"Play\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 5v14l11-7L8 5z\"/></svg></button><button class=\"ds-transport-step\" aria-label=\"Next track\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M16 6h2v12h-2V6zM6 18l8.5-6L6 6v12z\"/></svg></button></div><div class=\"ds-player-secondary\" role=\"group\" aria-label=\"Playback modes and queue\"><button class=\"ds-mode\" aria-label=\"Shuffle off\" aria-pressed=\"false\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z\"/></svg></button><button class=\"ds-queue\">Queue · 0 tracks</button><button class=\"ds-mode\" aria-label=\"Repeat off\" aria-pressed=\"false\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z\"/></svg></button></div></section>",
+      "css": ".ds-player-controls{font-family:Manrope,sans-serif;max-width:420px}.ds-transport{display:flex;justify-content:space-evenly;align-items:center;padding:12px 8px;border-radius:40px;background:#1B222B}.ds-transport-step,.ds-play,.ds-mode{display:grid;place-items:center;flex-shrink:0;border:0;cursor:pointer}.ds-transport-step{width:56px;height:56px;border-radius:20px;background:#20483A;color:#D6F6E9}.ds-play{width:72px;height:72px;border-radius:22px;background:#A8E6CF;color:#0C3526}.ds-transport-step svg,.ds-play svg{width:28px;height:28px;fill:currentColor}.ds-player-secondary{display:flex;justify-content:space-between;align-items:center;margin-top:24px;background:transparent}.ds-mode{width:48px;height:48px;border-radius:50%;background:transparent;color:#CDD4DE}.ds-mode svg{width:24px;height:24px;fill:currentColor}.ds-queue{font-family:Manrope,sans-serif;flex:1;min-height:48px;padding:8px 12px;border:0;border-radius:999px;background:transparent;color:#A8E6CF;font-size:14px;line-height:20px;font-weight:600;cursor:pointer}.ds-transport-step:hover{background:color-mix(in srgb,#D6F6E9 8%,#20483A)}.ds-play:hover{background:color-mix(in srgb,#0C3526 8%,#A8E6CF)}.ds-mode:hover,.ds-queue:hover{background:rgba(241,244,246,.08)}.ds-transport-step:focus-visible,.ds-play:focus-visible,.ds-mode:focus-visible,.ds-queue:focus-visible{outline:auto}.ds-transport-step:active{background:color-mix(in srgb,#D6F6E9 10%,#20483A)}.ds-play:active{background:color-mix(in srgb,#0C3526 10%,#A8E6CF)}.ds-mode:active,.ds-queue:active{background:rgba(241,244,246,.10)}"
+    },
+    {
+      "name": "Compact Onda Header",
+      "kind": "custom",
+      "refersTo": "onda-mark",
+      "description": "Original three-flowing-wave Canvas geometry, Onda wordmark and compact 48dp Standard-glass search action with 24dp corners. Browser specimen shows its opaque fallback.",
+      "html": "<div class=\"ds-identity\"><svg viewBox=\"0 0 32 32\" aria-hidden=\"true\"><path d=\"M2.56 8.32C11.2 1.28 20.8 15.36 29.44 8.32M2.56 16C11.2 8.96 20.8 23.04 29.44 16M2.56 23.68C11.2 16.64 20.8 30.72 29.44 23.68\"/></svg><span class=\"ds-identity-name\">Onda</span><button class=\"ds-home-search\" aria-label=\"Search music\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 14 15.5l.27.28v.79L19.49 21 21 19.49 15.5 14zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z\"/></svg></button></div>",
+      "css": ".ds-identity{font-family:Manrope,sans-serif;display:flex;align-items:center;gap:12px;color:#F1F4F6}.ds-identity>svg{width:32px;height:32px;fill:none;stroke:#A8E6CF;stroke-width:2.08;stroke-linecap:round}.ds-identity-name{flex:1;font-size:30px;line-height:38px;font-weight:600;letter-spacing:-.6px}.ds-home-search{display:grid;place-items:center;flex-shrink:0;width:48px;height:48px;border:0;border-radius:24px;background:#1B222B;color:#F1F4F6;cursor:pointer}.ds-home-search svg{width:24px;height:24px;fill:currentColor}.ds-home-search:hover{background:color-mix(in srgb,#F1F4F6 8%,#1B222B)}.ds-home-search:focus-visible{outline:auto}.ds-home-search:active{background:color-mix(in srgb,#F1F4F6 10%,#1B222B)}"
+    },
+    {
+      "name": "Recent Listening Statistics",
+      "kind": "card",
+      "refersTo": "stats-songs",
+      "description": "Solid asymmetric song/known-artist tiles based on at most 20 recent unique songs on this device. This specimen illustrates one retained song and no known artist count; production always computes actual history. It stacks at native narrow/large-text conditions.",
+      "html": "<section class=\"ds-recent-stats\"><span class=\"ds-stats-heading\">Recent listening</span><div class=\"ds-stats-bento\"><div class=\"ds-stat-songs\"><span class=\"ds-stat-song-count\">1</span><span class=\"ds-stat-label\">Songs</span></div><div class=\"ds-stat-artists\"><span class=\"ds-stat-artist-count\">—</span><span class=\"ds-stat-label\">Artists</span></div></div><p class=\"ds-stats-scope\">Based on up to 20 recent songs on this device.</p></section>",
+      "css": ".ds-recent-stats{font-family:Manrope,sans-serif;color:#F1F4F6}.ds-stats-heading{display:block;margin-bottom:12px;font-size:21px;line-height:28px;font-weight:600;letter-spacing:-.3px}.ds-stats-bento{display:flex;align-items:flex-end;gap:12px}.ds-stat-songs,.ds-stat-artists{display:flex;flex-direction:column;gap:4px;padding:20px}.ds-stat-songs{flex:1.4;border-radius:24px;background:#20483A}.ds-stat-artists{flex:1;border-radius:18px;background:#1B222B}.ds-stat-song-count{font-size:34px;line-height:40px;font-weight:600;letter-spacing:-.8px}.ds-stat-artist-count{font-size:30px;line-height:38px;font-weight:600;letter-spacing:-.6px}.ds-stat-label{font-size:14px;line-height:21px;font-weight:400;color:#CDD4DE}.ds-stats-scope{margin:12px 0 0;font-size:12px;line-height:18px;color:#CDD4DE}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Premium social music",
+    "overview": "Onda uses a dark content-first, editorial iOS-inspired hierarchy adapted to native Android. Immersive artwork and strong Manrope typography carry the visual emphasis. Ink and mint remain the stable identity; a playing cover can supply a readable accent. The original mark has three flowing waves.\n\nSelective Liquid Glass gives floating playback and navigation controls a material boundary. Music rows and social content remain solid or cardless, with Bento composition reserved for discovery and statistics. Avoid excess cards, gradients, pills, shadows, icons and glass. Respect native Back behavior, touch targets, text scaling and system insets.\n\nThe approved LastWave adaptation supplies Home's statistics → collection selector → pinned playback/list hierarchy and the player's primary transport → lower modes hierarchy. Onda keeps its wave identity, typography, colors, adaptive navigation and selective glass. Attribution and the pinned GPL-3.0 reference are recorded in `THIRD_PARTY_NOTICES.md`; reference branding, cover artwork and audio are not app assets.\n\nThis is a record of the 0.4.0 production Kotlin/Compose system. Native Robolectric/Roborazzi fixtures in `.impeccable/review/` provide offline rendering evidence; they do not establish emulator/device, TalkBack, audio, haptic, frame or battery acceptance. The source tokens below use Android dp and scalable sp. Sidecar HTML/CSS is a browser-panel translation, not native acceptance evidence.",
+    "keyCharacteristics": [
+      "Dark content-first layouts with a complete light theme.",
+      "Strong Manrope hierarchy and immersive artwork.",
+      "LastWave-aligned Home collections and primary/secondary player hierarchy.",
+      "Cover-derived accents with mathematical foreground contrast.",
+      "Selective glass islands for navigation, playback and overlays.",
+      "Cardless social layouts and truthful unavailable states.",
+      "Native Android behavior with Reduced and Minimal effects."
+    ],
+    "rules": [
+      {
+        "name": "The Content First Rule",
+        "body": "Keep surfaces and metadata readable; use the cover accent for atmosphere and action emphasis rather than coloring every container.",
+        "section": "colors"
+      },
+      {
+        "name": "The Selective Glass Rule",
+        "body": "Use glass for floating navigation, playback controls, the observed search entrance/field and appropriate overlays. Keep social copy, music rows and dense settings opaque or cardless; never capture another glass surface into a backdrop.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Truthful State Rule",
+        "body": "Give empty, loading and failure states readable copy and real recovery/discovery actions; never use fabricated activity to fill a layout.",
+        "section": "components"
+      }
+    ],
+    "dos": [
+      "**Do** lead with music artwork and readable Manrope hierarchy.",
+      "**Do** keep ink/mint as the fallback and let the current cover color the documented action roles with contrast checks.",
+      "**Do** use the original three-flowing-wave mark and restrained static backdrop contours.",
+      "**Do** preserve visible destination names, selected/action semantics, native Back behavior and system/IME insets.",
+      "**Do** honor 48dp controls, scalable text through 200%, Reduced and Minimal effects.",
+      "**Do** keep local listening and unavailable social states truthful.",
+      "**Do** label native host fixtures separately from pending device, TalkBack, audio, haptic, frame and battery verification."
+    ],
+    "donts": [
+      "**Don't** add excess cards, gradients, pills, shadows, icons or glass.",
+      "**Don't** extend Bento composition beyond discovery or statistics.",
+      "**Don't** blur dense metadata, social copy or settings, or capture glass into another glass source.",
+      "**Don't** replace actual content with fake social activity, messages or unsupported action controls.",
+      "**Don't** invent custom navigation/player motion, optical refraction or physical acceptance claims.",
+      "**Don't** promote browser-side preview ramps or translated snippets into new native design tokens."
+    ]
+  }
+}
