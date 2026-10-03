@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.dp
@@ -20,7 +21,9 @@ import dev.socialmusic.model.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun QueueSheet(state: PlaybackState, player: PlaybackController, onDismiss: () -> Unit) {
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)) {
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = Color.Transparent, dragHandle = null) {
+        WindowGlassSurface(Modifier.fillMaxWidth()) {
         LazyColumn(Modifier.fillMaxWidth().navigationBarsPadding(), contentPadding = PaddingValues(horizontal = Spacing.large, vertical = Spacing.medium), verticalArrangement = Arrangement.spacedBy(Spacing.medium)) {
             item {
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
@@ -47,6 +50,7 @@ internal fun QueueSheet(state: PlaybackState, player: PlaybackController, onDism
                     HorizontalDivider()
                 }
             }
+        }
         }
     }
 }

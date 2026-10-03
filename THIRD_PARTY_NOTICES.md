@@ -7,8 +7,6 @@ The complete corresponding Onda source for each published APK is the Git tag lin
 
 Onda integrates [NewPipeExtractor v0.26.5](https://github.com/TeamNewPipe/NewPipeExtractor/tree/v0.26.5), copyright its contributors, under [GPL-3.0-or-later](https://github.com/TeamNewPipe/NewPipeExtractor/blob/v0.26.5/LICENSE). Provider extraction code belongs to NewPipeExtractor; Onda's adapter is independently written. The dependency's source is available at the exact tag above and its transitive dependency declarations are in its Gradle version catalog.
 
-Onda does not incorporate LastWave application source, branding, illustrations or layouts.
-
 The extractor also brings these unmodified libraries. Their source and license texts are available at the pinned upstream versions:
 
 - Rhino 1.8.1: [source](https://github.com/mozilla/rhino/tree/Rhino1_8_1_Release), [MPL-2.0 and embedded notices](third_party/licenses/Rhino-LICENSE.txt).
@@ -17,6 +15,10 @@ The extractor also brings these unmodified libraries. Their source and license t
 - protobuf-javalite 4.35.1: [source](https://github.com/protocolbuffers/protobuf/tree/v35.1), [BSD license and copyright](third_party/licenses/Protobuf-LICENSE.txt).
 
 These source links and license copies are bundled in the APK's `assets/licenses/` directory. [Apache-2.0](third_party/licenses/Apache-2.0.txt) is also included for the platform/playback libraries below.
+
+## LastWave UI adaptation
+
+Home's statistics, collection selector and pinned playback hierarchy, and the player's primary transport / secondary modes hierarchy, are adapted from [LastWave Native](https://github.com/Clash-Projects/LastWave-native/tree/ac19d0634e2d9d0f9ea47d4720b46ce53722f757), by Duxtami, Ajisth and contributors, at revision `ac19d0634e2d9d0f9ea47d4720b46ce53722f757`. The reference is distributed under [GNU GPL version 3](third_party/licenses/LastWave-GPL-3.0.txt). Onda rewrites these structures for its own music contracts, local history, navigation and selective glass. LastWave branding, album artwork and audio are not bundled.
 
 ## Playback and platform libraries
 

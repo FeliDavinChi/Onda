@@ -10,8 +10,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
@@ -20,7 +18,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import coil3.compose.AsyncImage
 import dev.socialmusic.app.R
 import dev.socialmusic.designsystem.*
 import dev.socialmusic.domain.music.PlaybackController
@@ -55,7 +52,7 @@ fun MiniPlayer(state: PlaybackState, player: PlaybackController, effects: Effect
                     }
                 }
                 PlayPauseButton(state, player::togglePlayPause, Modifier.size(48.dp))
-                IconButton(onClick = player::next) { Icon(Icons.Outlined.SkipNext, stringResource(R.string.next_track)) }
+                IconButton(onClick = tactileAction(player::next)) { Icon(Icons.Outlined.SkipNext, stringResource(R.string.next_track)) }
             }
             if (state.buffering) LinearProgressIndicator(Modifier.fillMaxWidth().height(2.dp).clearAndSetSemantics { })
             else if ((state.durationMs ?: 0) > 0) LinearProgressIndicator(
@@ -68,9 +65,9 @@ fun MiniPlayer(state: PlaybackState, player: PlaybackController, effects: Effect
 }
 
 @Composable
-private fun PlayPauseButton(state: PlaybackState, onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun PlayPauseButton(state: PlaybackState, onClick: () -> Unit, modifier: Modifier = Modifier) {
     val playing = state.playWhenReady && state.status != PlaybackStatus.ERROR
-    FilledIconButton(onClick = onClick, modifier = modifier, shape = androidx.compose.foundation.shape.RoundedCornerShape(18.dp)) {
+    FilledIconButton(onClick = tactileAction(onClick), modifier = modifier, shape = androidx.compose.foundation.shape.RoundedCornerShape(22.dp)) {
         Icon(if (playing) Icons.Outlined.Pause else Icons.Outlined.PlayArrow,
             stringResource(if (playing) R.string.pause else R.string.play), modifier = Modifier.size(28.dp))
     }
@@ -81,16 +78,12 @@ fun FullPlayer(state: PlaybackState, player: PlaybackController, effects: Effect
     val track = state.currentTrack
     var showQueue by remember { mutableStateOf(false) }
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false)) {
-        GlassBackdropScope(effects) {
+        ArtworkTheme(track, effects) { GlassBackdropScope(effects) {
             Box(Modifier.fillMaxSize()) {
                 Box(Modifier.matchParentSize().glassBackdropSource()) {
                     WaveBackdrop(Modifier.matchParentSize())
-                    if (effects != EffectLevel.Minimal && track?.artwork != null) AsyncImage(
-                        model = track.artwork, contentDescription = null, contentScale = ContentScale.Crop,
-                        modifier = Modifier.matchParentSize().alpha(.08f),
-                    )
                 }
-                Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding()) {
+                Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding(), horizontalAlignment = Alignment.CenterHorizontally) {
                     Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp), verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = onDismiss) { Icon(Icons.Outlined.KeyboardArrowDown, stringResource(R.string.close_player)) }
                         Text(stringResource(R.string.now_playing), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
@@ -98,7 +91,7 @@ fun FullPlayer(state: PlaybackState, player: PlaybackController, effects: Effect
                             Icon(Icons.AutoMirrored.Outlined.QueueMusic, stringResource(R.string.open_queue))
                         }
                     }
-                    LazyColumn(Modifier.weight(1f), contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
+                    LazyColumn(Modifier.widthIn(max = 460.dp).fillMaxWidth().weight(1f), contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
                         verticalArrangement = Arrangement.spacedBy(24.dp)) {
                         if (track == null) item {
                             val error = state.error
@@ -108,21 +101,20 @@ fun FullPlayer(state: PlaybackState, player: PlaybackController, effects: Effect
                         }
                         else {
                             item { Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                                TrackArtwork(track, Modifier.widthIn(max = 340.dp).fillMaxWidth().aspectRatio(1f), radius = 28.dp)
+                                TrackArtwork(track, Modifier.widthIn(max = 380.dp).fillMaxWidth().aspectRatio(1f), radius = 20.dp)
                             } }
                             item {
-                                Text(track.title, style = MaterialTheme.typography.headlineMedium)
+                                Text(track.title, style = MaterialTheme.typography.headlineLarge)
                                 Spacer(Modifier.height(6.dp))
                                 Text(track.artists.joinToString { it.name }.ifBlank { stringResource(R.string.unknown_artist) },
                                     style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             item {
-                                GlassSurface(Modifier.fillMaxWidth(), GlassLevel.Elevated) {
-                                    Column(Modifier.padding(horizontal = 8.dp, vertical = 12.dp)) {
-                                        Box(Modifier.padding(horizontal = 8.dp)) { SeekControl(state, player::seekTo) }
-                                        Spacer(Modifier.height(12.dp))
-                                        PlayerTransport(state, player)
-                                    }
+                                SeekControl(state, player::seekTo)
+                            }
+                            item {
+                                GlassSurface(Modifier.widthIn(max = 420.dp).fillMaxWidth(), GlassLevel.Elevated, radius = 40.dp) {
+                                    Box(Modifier.padding(horizontal = 8.dp, vertical = 12.dp)) { PlayerTransport(state, player) }
                                 }
                             }
                             if (state.buffering) item { MusicLoading(stringResource(R.string.preparing_audio)) }
@@ -131,17 +123,13 @@ fun FullPlayer(state: PlaybackState, player: PlaybackController, effects: Effect
                                 else Text(stringResource(R.string.playback_unavailable), color = MaterialTheme.colorScheme.onSurfaceVariant)
                             } }
                             item {
-                                TextButton(onClick = { showQueue = true }, modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)) {
-                                    Icon(Icons.AutoMirrored.Outlined.QueueMusic, null)
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(pluralStringResource(R.plurals.queue_count, state.queue.size, state.queue.size))
-                                }
+                                PlayerSecondaryControls(state, player) { showQueue = true }
                             }
                         }
                     }
                 }
             }
-        }
+        } }
         if (showQueue) QueueSheet(state, player) { showQueue = false }
     }
 }
@@ -149,14 +137,28 @@ fun FullPlayer(state: PlaybackState, player: PlaybackController, effects: Effect
 @Composable
 private fun PlayerTransport(state: PlaybackState, player: PlaybackController) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+        FilledTonalIconButton(onClick = tactileAction(player::previous), modifier = Modifier.size(56.dp), shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp)) {
+            Icon(Icons.Outlined.SkipPrevious, stringResource(R.string.previous_track), Modifier.size(28.dp))
+        }
+        PlayPauseButton(state, player::togglePlayPause, Modifier.size(72.dp))
+        FilledTonalIconButton(onClick = tactileAction(player::next), modifier = Modifier.size(56.dp), shape = androidx.compose.foundation.shape.RoundedCornerShape(20.dp)) {
+            Icon(Icons.Outlined.SkipNext, stringResource(R.string.next_track), Modifier.size(28.dp))
+        }
+    }
+}
+
+/** LastWave's primary transport / lower modes hierarchy, with a real Onda queue in the center. */
+@Composable
+private fun PlayerSecondaryControls(state: PlaybackState, player: PlaybackController, onQueue: () -> Unit) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
         val shuffleLabel = stringResource(if (state.shuffle) R.string.shuffle_on else R.string.shuffle_off)
         IconToggleButton(checked = state.shuffle, onCheckedChange = { player.setShuffle(it) },
             modifier = Modifier.semantics { stateDescription = shuffleLabel }) {
             Icon(Icons.Outlined.Shuffle, shuffleLabel, tint = if (state.shuffle) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant)
         }
-        IconButton(onClick = player::previous) { Icon(Icons.Outlined.SkipPrevious, stringResource(R.string.previous_track), Modifier.size(28.dp)) }
-        PlayPauseButton(state, player::togglePlayPause, Modifier.size(64.dp))
-        IconButton(onClick = player::next) { Icon(Icons.Outlined.SkipNext, stringResource(R.string.next_track), Modifier.size(28.dp)) }
+        TextButton(onClick = onQueue, modifier = Modifier.weight(1f).heightIn(min = 48.dp)) {
+            Text(pluralStringResource(R.plurals.queue_count, state.queue.size, state.queue.size))
+        }
         val repeatLabel = stringResource(when (state.repeat) { RepeatMode.OFF -> R.string.repeat_off; RepeatMode.ONE -> R.string.repeat_one; RepeatMode.ALL -> R.string.repeat_all })
         IconButton(onClick = { player.setRepeat(when (state.repeat) { RepeatMode.OFF -> RepeatMode.ALL; RepeatMode.ALL -> RepeatMode.ONE; RepeatMode.ONE -> RepeatMode.OFF }) },
             modifier = Modifier.semantics { stateDescription = repeatLabel; selected = state.repeat != RepeatMode.OFF }) {
@@ -183,7 +185,10 @@ private fun SeekControl(state: PlaybackState, seekTo: (Long) -> Unit) {
             modifier = Modifier.fillMaxWidth().semantics { contentDescription = seekLabel; stateDescription = seekState })
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(elapsed, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
-            Text(duration?.let(::formatTime) ?: stringResource(R.string.duration_unknown), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            val remaining = duration?.let { formatTime((it - position.toLong()).coerceAtLeast(0)) }
+            val remainingDescription = remaining?.let { stringResource(R.string.time_remaining, it) } ?: stringResource(R.string.duration_unavailable)
+            Text(remaining?.let { "−$it" } ?: stringResource(R.string.duration_unknown), style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.clearAndSetSemantics { contentDescription = remainingDescription })
         }
     }
 }

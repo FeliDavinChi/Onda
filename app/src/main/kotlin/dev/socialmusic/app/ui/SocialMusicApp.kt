@@ -3,6 +3,10 @@ package dev.socialmusic.app.ui
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -41,7 +45,7 @@ private enum class Destination(val route: String, @StringRes val label: Int, val
 }
 
 @Composable
-fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel(), playerModel: PlayerViewModel = hiltViewModel()) {
+fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel(), playerModel: PlayerViewModel = hiltViewModel(), listening: ListeningViewModel = hiltViewModel()) {
     val player = playerModel.controller
     val playback by player.state.collectAsStateWithLifecycle()
     var playerOpen by remember { mutableStateOf(false) }
@@ -49,6 +53,8 @@ fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel(), playerMo
     val entry by navController.currentBackStackEntryAsState()
     val effect by preferences.effects.collectAsStateWithLifecycle()
     val saveError by preferences.saveError.collectAsStateWithLifecycle()
+    val recent by listening.recent.collectAsStateWithLifecycle()
+    val historyError by listening.clearError.collectAsStateWithLifecycle()
     val visualEffect = when (effect) {
         VisualEffectLevel.FULL -> EffectLevel.Full
         VisualEffectLevel.REDUCED -> EffectLevel.Reduced
@@ -63,11 +69,11 @@ fun SocialMusicApp(preferences: PreferencesViewModel = hiltViewModel(), playerMo
     }
     OndaScaffold(entry?.destination?.route ?: "home", playback, player, visualEffect, navigate, { playerOpen = true }) { padding ->
         NavHost(navController, startDestination = "home", modifier = Modifier.fillMaxSize().consumeWindowInsets(padding)) {
-            composable("home") { HomeScreen(player, { navigate("explore") }, padding) }
+            composable("home") { HomeScreen(player, { navigate("explore") }, padding, recentlyPlayed = recent, onOpenPlayer = { playerOpen = true }) }
             composable("explore") { ExploreScreen(player, padding) }
             composable("library") { EmptyDestination(R.string.library_headline, R.string.library_empty, Icons.Outlined.LibraryMusic, padding, { navigate("explore") }) }
-            composable("messages") { EmptyDestination(R.string.messages_headline, R.string.messages_empty, Icons.AutoMirrored.Outlined.Chat, padding, { navigate("explore") }) }
-            composable("profile") { ProfileScreen(effect, saveError, preferences::select, padding) }
+            composable("messages") { MessagesScreen(padding) { navigate("explore") } }
+            composable("profile") { ProfileScreen(effect, saveError, preferences::select, padding, recent.size, historyError, listening::clear) }
         }
     }
     if (playerOpen) FullPlayer(playback, player, visualEffect) { playerOpen = false }
@@ -84,22 +90,37 @@ internal fun OndaScaffold(
     onOpenPlayer: () -> Unit,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    GlassBackdropScope(effects) {
+    ArtworkTheme(playback.currentTrack, effects) { GlassBackdropScope(effects) {
         val density = LocalDensity.current
         val layoutDirection = LocalLayoutDirection.current
         val imeVisible = WindowInsets.ime.getBottom(density) > 0
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val shortWindow = maxHeight < 500.dp
+            val expanded = maxWidth >= 840.dp && maxHeight >= 600.dp
             WaveBackdrop(Modifier.matchParentSize().glassBackdropSource())
+            Row(Modifier.fillMaxSize()) {
+            if (expanded && !imeVisible) {
+                Box(Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start + WindowInsetsSides.Vertical))
+                    .width(if (density.fontScale >= 1.5f) 136.dp else 104.dp).fillMaxHeight(), contentAlignment = Alignment.Center) {
+                    GlassSurface(Modifier.padding(horizontal = 8.dp).fillMaxWidth().testTag("navigation-rail"), GlassLevel.Elevated) {
+                        Column(Modifier.fillMaxWidth().padding(8.dp)) {
+                            Destination.entries.forEach { destination ->
+                                NavigationTab(destination, route == destination.route, Modifier.fillMaxWidth()) { onNavigate(destination.route) }
+                            }
+                        }
+                    }
+                }
+            }
             Scaffold(
+                modifier = Modifier.weight(1f),
                 containerColor = Color.Transparent,
                 contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
                 bottomBar = {
                     if (imeVisible) Spacer(Modifier.imePadding()) else
-                    Column(Modifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)).navigationBarsPadding().padding(horizontal = Spacing.medium, vertical = Spacing.small),
-                        verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
-                        MiniPlayer(playback, player, effects, onOpenPlayer)
-                        GlassSurface(Modifier.fillMaxWidth(), level = GlassLevel.Elevated) { NavigationDock(route, shortWindow, onNavigate) }
+                    Column(Modifier.fillMaxWidth().windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)).navigationBarsPadding().padding(horizontal = Spacing.medium, vertical = Spacing.small),
+                        horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(Spacing.small)) {
+                        Box(Modifier.widthIn(max = 640.dp).fillMaxWidth()) { MiniPlayer(playback, player, effects, onOpenPlayer) }
+                        if (!expanded) GlassSurface(Modifier.widthIn(max = 640.dp).fillMaxWidth(), level = GlassLevel.Elevated) { NavigationDock(route, shortWindow, onNavigate) }
                     }
                 },
                 content = { padding ->
@@ -110,16 +131,28 @@ internal fun OndaScaffold(
                     }
                 },
             )
+            }
         }
-    }
+    } }
 }
 
 @Composable
 private fun NavigationDock(route: String, shortWindow: Boolean, navigate: (String) -> Unit) {
     val largeText = LocalDensity.current.fontScale >= 1.5f
+    if (shortWindow && largeText) {
+        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+            Destination.entries.forEach { destination ->
+                val requester = remember { BringIntoViewRequester() }
+                val active = route == destination.route
+                LaunchedEffect(active) { if (active) requester.bringIntoView() }
+                NavigationTab(destination, active, Modifier.width(140.dp).bringIntoViewRequester(requester)) { navigate(destination.route) }
+            }
+        }
+        return
+    }
     BoxWithConstraints(Modifier.fillMaxWidth()) {
         val columns = when {
-            shortWindow || !largeText || maxWidth >= 640.dp -> 5
+            !largeText || maxWidth >= 640.dp -> 5
             maxWidth < 340.dp -> 2
             else -> 3
         }
@@ -140,7 +173,7 @@ private fun NavigationDock(route: String, shortWindow: Boolean, navigate: (Strin
 private fun NavigationTab(destination: Destination, active: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val label = stringResource(destination.label)
     Column(
-        modifier.heightIn(min = 56.dp).clickable(onClick = onClick, role = Role.Tab)
+        modifier.heightIn(min = 56.dp).clickable(onClick = tactileAction(onClick), role = Role.Tab)
             .semantics { selected = active; contentDescription = label }.padding(vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {

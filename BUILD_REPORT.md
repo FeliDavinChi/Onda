@@ -1,5 +1,27 @@
 # Onda verification report
 
+## 0.4.0 editorial music UI preview — 3 October 2026
+
+The owner approved closer LastWave screen structures while retaining Onda's wave identity, bundled Manrope and selective Liquid Glass. Home now has real bounded listening statistics, a Recent/Recommended collection selector, the current song pinned above plain music rows, discovery Bento and a cardless friend-activity empty section. Now Playing uses large artwork, elapsed/remaining time, three primary transport buttons and a separate shuffle/queue/repeat row. Messages remains a truthful conversation-oriented empty state; authentication and social/messaging backends are not implemented.
+
+Private Preferences DataStore history keeps at most 20 unique recent tracks and 128KiB of sanitized metadata. The process observer records actual non-buffering playback rather than position ticks or paused restoration. Profile can clear it; the next resumed/new listen records correctly. The newest local identity can seed upstream recommendations. A shared Coil loader requests 64px artwork for bounded background color extraction, with a 24-entry cache, cancellation and contrast checks. Full effects animate the accent over 220ms; Reduced uses an immediate change; Minimal skips artwork-color work. Glass overlays capture their own window backdrop. Expanded windows use a floating side rail; short large-text windows use reachable horizontal destinations.
+
+Final host verification ran:
+
+```powershell
+.\scripts\gradle-local.ps1 test :app:assembleDebug :app:lintDebug '-Dorg.gradle.vfs.watch=false' --max-workers=1 --console=plain
+```
+
+`BUILD SUCCESSFUL` in 3m 31s, 422 tasks (49 executed). JUnit reports contain **170 executions: 168 passed, zero failures/errors and two intentionally skipped optional live-network checks**. This includes 25 debug UI tests against production Compose, history ordering/bounds/corruption/clear/resume and write-failure recovery, and artwork selection/contrast tests. Android lint reports **zero errors and 48 dependency/AGP update warnings**, with no suppressed findings. A packaging-only refresh after final notice organization passed in 16s (130 tasks, 4 executed).
+
+Twenty Robolectric SDK35/28 Roborazzi captures cover dark/light Home and player, discovery/recent state, Messages, search/IME, API28 and low-RAM fallbacks, Full/Reduced/Minimal, 200% text, narrow/short windows and tablet Home/player. Interaction checks verify collection switching with real local data, pinned-player opening without resetting playback, discovery source indices, accessible search, queue/transport and history clearing. Preview artwork/metadata are original offline fixtures; production continues to use live provider results.
+
+Fresh Impeccable review of the final LastWave-aligned source and all 20 valid captures found no material UI repair. It requested reconciliation of the previous design-document checkpoint; the documenter updated normative tokens, component specimens and narrative, and the reviewer scored that persistence fix resolved with disposition `ship`. An earlier review's tablet rail, short-window large-text labels and clear/resume recorder findings were also fixed and scored resolved. Review acceptance is limited to supplied source and native host evidence.
+
+APK: `dev.socialmusic.app.debug`, label Onda, **0.4.0/code 4**, min SDK26/target SDK35, **28,471,323 bytes**. `apksigner verify --verbose --print-certs` passed with the development debug certificate and v2 signature. SHA-256: `fbbd4686c59808fd5febe687c812c465a3ea178d16a78f7a199ba4c3cccf7cb6`. The eight packaged license/notice entries include the pinned LastWave GPL-3.0 text; the packaged notices and LastWave license exactly match the source files. Release assets include this APK, corresponding Onda source and pinned extractor source.
+
+There is no attached device or installed emulator. Host evidence does not establish physical audio/background/focus/headset behavior, TalkBack order, haptic feel, frame pacing or battery cost. Those gates remain open. The earlier milestone reports below are historical where this preview supersedes them.
+
 ## 0.3.0 Liquid Glass UI preview — 2 October 2026
 
 Implemented captured-backdrop glass with Haze 1.5.4, directional edge light, a quiet original wave field and licensed Manrope typography. Home now presents live artwork discovery and a clear search entrance; Explore has a labeled glass search field and actionable empty/error states. Floating navigation and the mini-player lead to an artwork-focused full player with one seek/transport surface. Existing provider, background playback, queue, shuffle/repeat and retry commands remain connected. Profile exposes persisted Full/Reduced/Minimal effects; deferred library/social features use truthful empty states.

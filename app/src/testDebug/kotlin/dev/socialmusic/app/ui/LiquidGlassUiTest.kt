@@ -18,6 +18,10 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import dev.socialmusic.common.LoadState
+import dev.socialmusic.common.VisualEffectLevel
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.ui.graphics.toArgb
 import dev.socialmusic.designsystem.*
 import dev.socialmusic.domain.music.PlaybackController
 import dev.socialmusic.model.*
@@ -52,7 +56,7 @@ class LiquidGlassUiTest {
     private val player by lazy { RecordingPlayer(playback) }
 
     @Test fun homeDark() {
-        renderHome(true, EffectLevel.Full); capture("home-dark")
+        renderHome(true, EffectLevel.Full, withHistory = true); capture("home-dark")
         val bounds = ui.onNodeWithText("Onda").fetchSemanticsNode().boundsInRoot
         val image = BitmapFactory.decodeFile("build/reports/ui/home-dark.png")
         var brightPixels = 0
@@ -62,10 +66,100 @@ class LiquidGlassUiTest {
         }
         assertTrue("Dark headings must use a readable light foreground", brightPixels > 20)
     }
-    @Test fun homeLight() { renderHome(false, EffectLevel.Full); capture("home-light") }
+    @Test fun homeLight() { renderHome(false, EffectLevel.Full, withHistory = true); capture("home-light") }
+    @Test @Config(qualifiers = "w840dp-h1180dp-mdpi") fun tabletHomeKeepsContentAndControlsBounded() {
+        renderHome(true, EffectLevel.Full, withHistory = true)
+        ui.onNodeWithTag("navigation-rail").assertIsDisplayed()
+        ui.onNodeWithContentDescription("Search songs and artists").assertIsDisplayed()
+        val content = ui.onNodeWithTag("home-content").fetchSemanticsNode().boundsInRoot
+        assertTrue(content.width <= 760f)
+        assertTrue(ui.onNodeWithTag("mini-player").fetchSemanticsNode().boundsInRoot.width <= 640f)
+        capture("home-tablet")
+    }
+    @Test @Config(qualifiers = "w840dp-h1180dp-mdpi") fun tabletPlayerKeepsTransportReachable() {
+        renderPlayer(true, EffectLevel.Full)
+        ui.onNodeWithContentDescription("Next track").assertIsDisplayed().performClick()
+        assertEquals("next", player.lastCommand)
+        capture("player-tablet")
+    }
+    @Test fun recentListeningStartsItsOwnCollection() {
+        ui.setContent { SocialMusicTheme(dark = true) { OndaScaffold("home", PlaybackState(), player, EffectLevel.Full, {}, {}) { padding ->
+            HomeContent(LoadState.Empty, PlaybackState(), player, {}, {}, padding, listOf(tracks.last()))
+        } } }
+        ui.onNodeWithText("Recently played").assertIsDisplayed()
+        ui.onNode(hasClickAction() and hasText(tracks.last().title)).performClick()
+        assertEquals("play:0", player.lastCommand)
+        capture("home-recent")
+    }
+    @Test fun homeSelectorUsesActualHistoryAndRecommendations() {
+        ui.setContent { SocialMusicTheme(dark = true) { OndaScaffold("home", PlaybackState(), player, EffectLevel.Full, {}, {}) { padding ->
+            HomeContent(LoadState.Ready(tracks), PlaybackState(), player, {}, {}, padding, listOf(tracks.last()))
+        } } }
+        ui.onNodeWithText("Recent listening").assertIsDisplayed()
+        ui.onAllNodesWithText("1").assertCountEquals(2)
+        ui.onNodeWithTag("mix-row-0").onChildren().onFirst().performClick()
+        assertEquals(listOf(tracks.last().id), player.playedTracks.map { it.id })
+        ui.onNodeWithTag("home-collection").performClick()
+        ui.onNodeWithText("Recommended").performClick()
+        ui.onNodeWithTag("mix-row-0").onChildren().onFirst().performClick()
+        assertEquals(tracks.map { it.id }, player.playedTracks.map { it.id })
+    }
+    @Test fun pinnedListeningOpensTheExistingPlayer() {
+        var opened = false
+        ui.setContent { SocialMusicTheme(dark = true) { OndaScaffold("home", playback, player, EffectLevel.Full, {}, {}) { padding ->
+            HomeContent(LoadState.Ready(tracks), playback, player, {}, {}, padding, onOpenPlayer = { opened = true })
+        } } }
+        ui.onNodeWithTag("current-listening").performClick()
+        assertTrue(opened)
+        assertEquals("", player.lastCommand)
+    }
+    @Test fun discoveryBentoPlaysTheCorrectCatalogOccurrence() {
+        ui.setContent { SocialMusicTheme(dark = true) { OndaScaffold("home", PlaybackState(), player, EffectLevel.Full, {}, {}) { padding ->
+            HomeContent(LoadState.Ready(tracks), PlaybackState(), player, {}, {}, padding)
+        } } }
+        ui.onNodeWithTag("discovery-track-2").performScrollTo().performClick()
+        assertEquals("play:2", player.lastCommand)
+        capture("home-discovery")
+    }
+    @Test fun messagesEmptyStateDirectsToMusicWithoutFakeConversations() {
+        var explored = false
+        ui.setContent { SocialMusicTheme(dark = true) { OndaScaffold("messages", PlaybackState(), player, EffectLevel.Full, {}, {}) { padding ->
+            MessagesScreen(padding) { explored = true }
+        } } }
+        ui.onNodeWithText("A place for your people.").assertIsDisplayed()
+        ui.onNodeWithText("Find music").performClick(); assertTrue(explored)
+        capture("messages-dark")
+    }
+    @Test fun clearingHistoryRequiresTheConfirmationAction() {
+        var cleared = false
+        ui.setContent { SocialMusicTheme(dark = true) { GlassBackdropScope(EffectLevel.Full) {
+            ProfileScreen(VisualEffectLevel.FULL, false, {}, historyCount = 20, onClearHistory = { cleared = true })
+        } } }
+        ui.onNodeWithText("Clear listening history").performScrollTo().performClick()
+        assertFalse(cleared)
+        ui.onNodeWithText("Cancel").performClick(); assertFalse(cleared)
+        ui.onNodeWithText("Clear listening history").performClick()
+        ui.onAllNodes(hasText("Clear listening history") and hasClickAction()).onLast().performClick()
+        assertTrue(cleared)
+    }
+    @Test fun coverColorsReachTheNativeThemeAndMinimalKeepsBrandColors() {
+        var observed = Color.Unspecified
+        var effects by mutableStateOf(EffectLevel.Full)
+        val cover = tracks.first()
+        ui.setContent { SocialMusicTheme(dark = true) { ArtworkTheme(cover, effects) {
+            val colors = MaterialTheme.colorScheme
+            SideEffect { observed = colors.primary }
+            Text("Artwork colors", color = colors.primary)
+        } } }
+        ui.waitUntil(5000) { observed != Color.Unspecified && observed.red > observed.green }
+        assertTrue(colorContrast(observed, Color(0xFF101419)) >= 4.5f)
+        ui.runOnIdle { effects = EffectLevel.Minimal }
+        ui.waitForIdle()
+        assertEquals("Minimal restores the brand accent", 0xFFA8E6CF.toInt(), observed.toArgb())
+    }
     @Test fun homeMinimalLargeTextKeepsActionsReachable() {
         renderHome(true, EffectLevel.Minimal, 2f)
-        ui.onNodeWithText("Search songs and artists").performScrollTo().assertIsDisplayed()
+        ui.onNodeWithContentDescription("Search songs and artists").performScrollTo().assertIsDisplayed()
         capture("home-large-minimal")
         listOf("home", "explore", "library", "messages", "profile").forEach { ui.onNodeWithTag("nav-label-$it", useUnmergedTree = true).assertIsDisplayed() }
         ui.onNodeWithContentDescription("Explore").performClick()
@@ -74,8 +168,8 @@ class LiquidGlassUiTest {
     @Test @Config(qualifiers = "w320dp-h740dp-mdpi") fun narrowLargeTextKeepsVisibleDestinationNames() {
         renderHome(true, EffectLevel.Minimal, 2f)
         listOf("home", "explore", "library", "messages", "profile").forEach { ui.onNodeWithTag("nav-label-$it", useUnmergedTree = true).assertIsDisplayed() }
-        ui.onNodeWithText("Search songs and artists").performScrollTo().assertIsDisplayed()
-        val search = ui.onNodeWithText("Search songs and artists").fetchSemanticsNode().boundsInRoot
+        ui.onNodeWithContentDescription("Search songs and artists").performScrollTo().assertIsDisplayed()
+        val search = ui.onNodeWithContentDescription("Search songs and artists").fetchSemanticsNode().boundsInRoot
         val dock = ui.onNodeWithTag("mini-player").fetchSemanticsNode().boundsInRoot
         assertTrue("Search stays above floating controls", search.bottom <= dock.top)
         capture("home-narrow-large")
@@ -92,9 +186,12 @@ class LiquidGlassUiTest {
     }
     @Test @Config(qualifiers = "w360dp-h360dp-mdpi") fun shortWindowAtLargeTextKeepsContentUsable() {
         renderHome(true, EffectLevel.Minimal, 2f)
-        listOf("home", "explore", "library", "messages", "profile").forEach { ui.onNodeWithTag("nav-label-$it", useUnmergedTree = true).assertIsDisplayed() }
-        ui.onNodeWithText("Search songs and artists").performScrollTo().assertIsDisplayed()
-        val search = ui.onNodeWithText("Search songs and artists").fetchSemanticsNode().boundsInRoot
+        listOf("home", "explore", "library", "messages", "profile").forEach {
+            val label = ui.onNodeWithTag("nav-label-$it", useUnmergedTree = true).performScrollTo().assertIsDisplayed()
+            assertTrue("Short windows keep each destination name on one readable line", label.fetchSemanticsNode().boundsInRoot.height <= 40f)
+        }
+        ui.onNodeWithContentDescription("Search songs and artists").performScrollTo().assertIsDisplayed()
+        val search = ui.onNodeWithContentDescription("Search songs and artists").fetchSemanticsNode().boundsInRoot
         val dock = ui.onNodeWithTag("mini-player").fetchSemanticsNode().boundsInRoot
         assertTrue("Short windows keep a usable route viewport", dock.top >= 100f)
         assertTrue("Search stays above floating controls in split screen", search.bottom <= dock.top)
@@ -159,7 +256,7 @@ class LiquidGlassUiTest {
     @Test @Config(sdk = [28]) fun olderAndroidUsesReadableFallback() {
         renderHome(true, EffectLevel.Full)
         ui.onNodeWithContentDescription("Home").assertIsSelected()
-        ui.onNodeWithText("Search songs and artists").assertIsDisplayed(); capture("home-api28-fallback")
+        ui.onNodeWithContentDescription("Search songs and artists").assertIsDisplayed(); capture("home-api28-fallback")
     }
     @Test fun lowRamGlassUsesOpaqueMaterial() {
         val manager = RuntimeEnvironment.getApplication().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
@@ -191,11 +288,11 @@ class LiquidGlassUiTest {
         } } }
     }
     private fun materialPixel(name: String): Int = BitmapFactory.decodeFile("build/reports/ui/$name.png").let { it.getPixel(it.width / 2, it.height / 2) }
-    private fun renderHome(dark: Boolean, effects: EffectLevel, fontScale: Float = 1f) {
+    private fun renderHome(dark: Boolean, effects: EffectLevel, fontScale: Float = 1f, withHistory: Boolean = false) {
         RuntimeEnvironment.setFontScale(fontScale)
         ui.setContent { Themed(dark, fontScale) {
             OndaScaffold("home", playback, player, effects, { player.lastRoute = it }, {}) { padding ->
-                HomeContent(LoadState.Ready(tracks), playback, player, {}, {}, padding)
+                HomeContent(LoadState.Ready(tracks), playback, player, {}, {}, padding, if (withHistory) tracks.take(5) else emptyList())
             }
         } }
     }
@@ -245,8 +342,9 @@ class LiquidGlassUiTest {
 private class RecordingPlayer(initial: PlaybackState) : PlaybackController {
     override val state = MutableStateFlow(initial)
     var lastCommand = ""; var lastRoute = ""; var nextTrack: Track? = null
+    var playedTracks = emptyList<Track>()
     var shuffleValue = false; var repeatValue = RepeatMode.OFF; var seekPosition = -1L; var removed = ""
-    override fun play(tracks: List<Track>, startIndex: Int) { lastCommand = "play:$startIndex" }
+    override fun play(tracks: List<Track>, startIndex: Int) { lastCommand = "play:$startIndex"; playedTracks = tracks }
     override fun togglePlayPause() { lastCommand = "toggle" }
     override fun seekTo(positionMs: Long) { seekPosition = positionMs }
     override fun next() { lastCommand = "next" }

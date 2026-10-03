@@ -8,6 +8,7 @@ import dev.socialmusic.model.Track
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 
 fun interface CatalogReader { suspend fun load(): List<Track> }
@@ -15,9 +16,11 @@ fun interface CatalogReader { suspend fun load(): List<Track> }
 class CatalogRepository @Inject constructor(
     private val source: MusicSource,
     private val database: MusicDatabase,
+    private val history: ListeningHistory,
 ) : CatalogReader {
     override suspend fun load(): List<Track> = withContext(Dispatchers.IO) {
-        val tracks = source.getRecommendations(RecommendationSeed()).take(50)
+        val seed = history.recent.first().firstOrNull()?.id
+        val tracks = source.getRecommendations(RecommendationSeed(trackIds = listOfNotNull(seed))).take(50)
         val timestamp = System.currentTimeMillis()
         database.cachedTracks().cache(tracks.map { track ->
             CachedTrack(

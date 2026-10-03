@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -22,12 +21,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextOverflow
 import coil3.compose.AsyncImage
 import dev.socialmusic.app.R
-import dev.socialmusic.designsystem.Spacing
+import dev.socialmusic.designsystem.*
 import dev.socialmusic.model.Track
 
 @Composable
 fun TrackArtwork(track: Track, modifier: Modifier = Modifier, radius: Dp = 12.dp) {
-    Box(modifier.clip(RoundedCornerShape(radius)).background(Brush.linearGradient(listOf(MaterialTheme.colorScheme.surfaceVariant, MaterialTheme.colorScheme.primaryContainer))), contentAlignment = Alignment.Center) {
+    Box(modifier.clip(RoundedCornerShape(radius)).background(MaterialTheme.colorScheme.surfaceVariant), contentAlignment = Alignment.Center) {
         Icon(Icons.Outlined.MusicNote, contentDescription = null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(32.dp))
         if (track.artwork != null) AsyncImage(model = track.artwork, contentDescription = null, contentScale = ContentScale.Crop, modifier = Modifier.fillMaxSize())
     }
@@ -39,7 +38,7 @@ fun TrackRow(track: Track, selected: Boolean, onPlay: () -> Unit, onPlayNext: ()
     val playLabel = stringResource(R.string.play_track, track.title)
     Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp))
         .background(if (selected) MaterialTheme.colorScheme.primaryContainer.copy(alpha = .45f) else Color.Transparent)
-        .clickable(onClickLabel = playLabel, onClick = onPlay).semantics { this.selected = selected }
+        .clickable(onClickLabel = playLabel, onClick = tactileAction(onPlay)).semantics { this.selected = selected }
         .padding(start = 8.dp, top = 8.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp)) {
         TrackArtwork(track, Modifier.size(54.dp))
@@ -52,9 +51,13 @@ fun TrackRow(track: Track, selected: Boolean, onPlay: () -> Unit, onPlayNext: ()
         }
         Box {
             IconButton(onClick = { menuOpen = true }) { Icon(Icons.Outlined.MoreVert, stringResource(R.string.track_actions, track.title)) }
-            DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
-                DropdownMenuItem(text = { Text(stringResource(R.string.play_next)) }, onClick = { menuOpen = false; onPlayNext() })
-                DropdownMenuItem(text = { Text(stringResource(R.string.add_to_queue)) }, onClick = { menuOpen = false; onAddToQueue() })
+            DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }, containerColor = Color.Transparent, shadowElevation = 0.dp) {
+                WindowGlassSurface {
+                    Column {
+                        DropdownMenuItem(text = { Text(stringResource(R.string.play_next)) }, onClick = { menuOpen = false; onPlayNext() })
+                        DropdownMenuItem(text = { Text(stringResource(R.string.add_to_queue)) }, onClick = { menuOpen = false; onAddToQueue() })
+                    }
+                }
             }
         }
     }
