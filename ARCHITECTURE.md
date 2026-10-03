@@ -8,7 +8,7 @@ The imported app retains its catalogue, library, Last.fm integration, YouTube re
 
 The social package owns Onda email accounts, encrypted Android Keystore-backed sessions, directed follows, friend listening, opt-in taste influence and privacy controls. Public project configuration comes from environment variables or ignored local properties. HTTP cancellation cancels the underlying request; account generations reject results from old sessions. Logout clears local identity and attempts bounded server revocation.
 
-SocialListeningPublisher observes coarse player state. Sharing starts disabled. It publishes state changes and 30-second heartbeats with a server-enforced 90-second live expiry. A meaningful listening signal requires 30 uninterrupted seconds, an enabled collection purpose, and no private session. Stable event IDs make retries idempotent. The Circle UI refreshes every 30 seconds and discards permission-bearing results when authorization cannot be refreshed.
+SocialListeningPublisher observes coarse player state and waits for the account's settings to load before publishing. New profiles default to personalization, listening sharing and taste sharing on, with private session off; existing stored choices are preserved. It publishes state changes and 30-second heartbeats with a server-enforced 90-second live expiry. A meaningful listening signal requires 30 uninterrupted seconds, an enabled collection purpose, and no private session. Stable event IDs make retries idempotent. The Circle UI refreshes every 30 seconds and discards permission-bearing results when authorization cannot be refreshed.
 
 ## Supabase
 

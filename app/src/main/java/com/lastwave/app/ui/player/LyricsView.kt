@@ -1007,6 +1007,7 @@ private fun LyricsPlaybackControls(
     modifier: Modifier = Modifier,
 ) {
     var showFontSlider by rememberSaveable { mutableStateOf(false) }
+    val (draftFontScale, fontAdjustment) = rememberLyricsFontScaleAdjustment(lyricsFontScale, onLyricsFontScaleChange)
 
     // This Column performs layout only. It intentionally draws no container.
     Column(
@@ -1037,14 +1038,14 @@ private fun LyricsPlaybackControls(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Lyrics size: ${(lyricsFontScale * 100).roundToInt()}%",
+                            text = "Lyrics size: ${(draftFontScale * 100).roundToInt()}%",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White.copy(alpha = 0.90f),
                         )
-                        if (lyricsFontScale != 1.0f) {
+                        if (draftFontScale != 1.0f) {
                             TextButton(
-                                onClick = { onLyricsFontScaleChange(1.0f) },
+                                onClick = { fontAdjustment.select(1.0f) },
                                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                                 modifier = Modifier.height(26.dp),
                             ) {
@@ -1068,8 +1069,9 @@ private fun LyricsPlaybackControls(
                             color = Color.White.copy(alpha = 0.70f),
                         )
                         Slider(
-                            value = lyricsFontScale,
-                            onValueChange = onLyricsFontScaleChange,
+                            value = draftFontScale,
+                            onValueChange = fontAdjustment::preview,
+                            onValueChangeFinished = fontAdjustment::finish,
                             valueRange = 0.7f..1.5f,
                             modifier = Modifier.weight(1f),
                         )

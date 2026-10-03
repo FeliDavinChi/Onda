@@ -26,10 +26,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +41,7 @@ fun LyricsSizeDialog(
     onSelect: (Float) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var draftScale by remember(currentScale) { mutableFloatStateOf(currentScale) }
+    val (draftScale, fontAdjustment) = rememberLyricsFontScaleAdjustment(currentScale, onSelect)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -142,10 +138,8 @@ fun LyricsSizeDialog(
                     )
                     Slider(
                         value = draftScale,
-                        onValueChange = {
-                            draftScale = it
-                            onSelect(draftScale)
-                        },
+                        onValueChange = fontAdjustment::preview,
+                        onValueChangeFinished = fontAdjustment::finish,
                         valueRange = 0.7f..1.5f,
                         modifier = Modifier.weight(1f),
                     )
@@ -166,8 +160,7 @@ fun LyricsSizeDialog(
                     listOf(0.8f to "80%", 1.0f to "100%", 1.2f to "120%", 1.4f to "140%").forEach { (scale, label) ->
                         OutlinedButton(
                             onClick = {
-                                draftScale = scale
-                                onSelect(draftScale)
+                                fontAdjustment.select(scale)
                             },
                             modifier = Modifier.weight(1f),
                             contentPadding = PaddingValues(horizontal = 2.dp, vertical = 6.dp),
@@ -193,8 +186,7 @@ fun LyricsSizeDialog(
             if (draftScale != 1.0f) {
                 TextButton(
                     onClick = {
-                        draftScale = 1.0f
-                        onSelect(1.0f)
+                        fontAdjustment.select(1.0f)
                     },
                 ) {
                     Icon(

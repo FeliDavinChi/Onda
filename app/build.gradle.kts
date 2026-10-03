@@ -60,8 +60,8 @@ android {
         applicationId = "dev.socialmusic.app"
         minSdk = (project.findProperty("minSdk") as? String)?.toIntOrNull() ?: 29
         targetSdk = 35
-        versionCode = 1
-        versionName = "0.2.0"
+        versionCode = 2
+        versionName = "0.2.1"
         buildConfigField("String", "ONDA_SUPABASE_URL", "\"${resolveSecret("ONDA_SUPABASE_URL")}\"")
         buildConfigField("String", "ONDA_SUPABASE_PUBLISHABLE_KEY", "\"${resolveSecret("ONDA_SUPABASE_PUBLISHABLE_KEY")}\"")
 

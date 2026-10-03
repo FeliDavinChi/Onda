@@ -1,6 +1,8 @@
 package com.lastwave.app.social
 
 data class OndaAccount(val id: String, val email: String)
+// Fail closed until the server settings are loaded. New-profile defaults live in
+// the database; this placeholder must not publish before an existing user's choices arrive.
 data class SocialPreferences(val listeningShared: Boolean = false, val tasteShared: Boolean = false, val privateSession: Boolean = false, val personalizationEnabled: Boolean = false)
 data class SharedListening(val videoId: String, val title: String, val artist: String, val live: Boolean)
 data class SocialPerson(

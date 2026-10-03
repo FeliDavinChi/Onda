@@ -419,33 +419,38 @@ private fun KaraokeLineWrapScope(
         val syncedLyrics = remember(displayLines, trackTitle, trackArtist, isOverallRtl) {
             displayLines.toSyncedLyrics(trackTitle, trackArtist, isOverallRtl)
         }
-        val initialLineIndex = remember(syncedLyrics) {
-            val time = currentPosition()
-            val idx = syncedLyrics.lines.indexOfFirst { time in it.start..it.end }
-            if (idx != -1) idx else syncedLyrics.lines.indexOfFirst { it.start > time }.takeIf { it != -1 } ?: 0
+        // lyrics-ui 1.0.19 retains its first listState in scrolling effects and
+        // row styles in remember blocks. Its internal Crossfade also shares an
+        // index-based layout cache between outgoing and incoming lyric lists.
+        // Replace the whole renderer with its list state when size/wrapping
+        // changes, so those retained values all belong to the same generation.
+        key(syncedLyrics, normalStyle, accompanimentStyle, wrapBudgetPx, density) {
+            val initialLineIndex = remember {
+                val time = currentPosition()
+                val idx = syncedLyrics.lines.indexOfFirst { time in it.start..it.end }
+                if (idx != -1) idx else syncedLyrics.lines.indexOfFirst { it.start > time }.takeIf { it != -1 } ?: 0
+            }
+            val listState = rememberLazyListState(initialFirstVisibleItemIndex = initialLineIndex)
+            KaraokeLyricsView(
+                listState = listState,
+                lyrics = syncedLyrics,
+                showTranslation = true,
+                showPhonetic = true,
+                currentPosition = currentPosition,
+                onLineClicked = { line ->
+                    // Inverse of the highlight shift: tap targets audio time.
+                    player.seekTo((line.start - lyricsOffsetMs).coerceAtLeast(0).toLong())
+                },
+                onLinePressed = {},
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 12.dp),
+                offset = 84.dp,
+                normalLineTextStyle = normalStyle,
+                accompanimentLineTextStyle = accompanimentStyle,
+                textColor = Color.White,
+            )
         }
-        val listState = key(syncedLyrics) {
-            rememberLazyListState(initialFirstVisibleItemIndex = initialLineIndex)
-        }
-        KaraokeLyricsView(
-            listState = listState,
-            lyrics = syncedLyrics,
-            showTranslation = true,
-            showPhonetic = true,
-            currentPosition = currentPosition,
-            onLineClicked = { line ->
-                // Inverse of the highlight shift: tap targets audio time.
-                player.seekTo((line.start - lyricsOffsetMs).coerceAtLeast(0).toLong())
-            },
-            onLinePressed = {},
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 12.dp),
-            offset = 84.dp,
-            normalLineTextStyle = normalStyle,
-            accompanimentLineTextStyle = accompanimentStyle,
-            textColor = Color.White,
-        )
     }
 }
 
@@ -687,6 +692,7 @@ private fun ModernLyricsControls(
     modifier: Modifier = Modifier,
 ) {
     var showFontSlider by rememberSaveable { mutableStateOf(false) }
+    val (draftFontScale, fontAdjustment) = rememberLyricsFontScaleAdjustment(lyricsFontScale, onLyricsFontScaleChange)
 
     Column(
         modifier = modifier
@@ -716,14 +722,14 @@ private fun ModernLyricsControls(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = "Lyrics size: ${(lyricsFontScale * 100).roundToInt()}%",
+                            text = "Lyrics size: ${(draftFontScale * 100).roundToInt()}%",
                             style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = Color.White.copy(alpha = 0.90f),
                         )
-                        if (lyricsFontScale != 1.0f) {
+                        if (draftFontScale != 1.0f) {
                             TextButton(
-                                onClick = { onLyricsFontScaleChange(1.0f) },
+                                onClick = { fontAdjustment.select(1.0f) },
                                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp),
                                 modifier = Modifier.height(26.dp),
                             ) {
@@ -747,8 +753,9 @@ private fun ModernLyricsControls(
                             color = Color.White.copy(alpha = 0.70f),
                         )
                         Slider(
-                            value = lyricsFontScale,
-                            onValueChange = onLyricsFontScaleChange,
+                            value = draftFontScale,
+                            onValueChange = fontAdjustment::preview,
+                            onValueChangeFinished = fontAdjustment::finish,
                             valueRange = 0.7f..1.5f,
                             modifier = Modifier.weight(1f),
                         )

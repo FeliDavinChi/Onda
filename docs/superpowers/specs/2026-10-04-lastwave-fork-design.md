@@ -3,6 +3,8 @@
 Date: 4 October 2026 (Asia/Calcutta).
 Status: the user directed implementation on 4 October 2026 after reviewing the product direction and backend split. Implementation proceeds in the current checkout; completion is recorded by build and test evidence.
 
+Revision, 4 October 2026: the user requested new-profile defaults of personalized recommendations, listening sharing and taste sharing **on**, with private session **off**. This overrides earlier default-off wording for those three account switches. Existing user choices remain stored. Per-person recommendation influence still requires the receiver's explicit choice.
+
 ## Product direction
 
 The user explicitly changed the approach from independently rebuilding a music player to directly reusing the whole LastWave application and making social music the differentiator. They authorized cloning LastWave and using its repository at our discretion. This supersedes the earlier brief's restrictions against copying its implementation and layouts. Onda remains the product name.

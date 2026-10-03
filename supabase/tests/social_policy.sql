@@ -10,9 +10,10 @@ select public.setup_profile('onda_test_a','Receiver');
 select public.set_social_preferences(false,false,false,true);
 select set_config('request.jwt.claim.sub','00000000-0000-0000-0000-000000000002',true);
 select public.setup_profile('onda_test_b','Source');
+select public.set_social_preferences(false,false,false,false);
 select public.record_listening_event('10000000-0000-0000-0000-000000000001','abcdefghijk','Test song','Test artist','like');
 do $$ begin
- if (select count(*) from public.listening_events)<>0 then raise exception 'Default consent collected taste'; end if;
+ if (select count(*) from public.listening_events)<>0 then raise exception 'Disabled personalization collected taste'; end if;
 end $$;
 select public.set_social_preferences(true,true,false,false);
 select public.record_listening_event('10000000-0000-0000-0000-000000000002','abcdefghijk','Test song','Test artist','like');

@@ -1,5 +1,19 @@
 # Onda build and backend report — 4 October 2026
 
+## Onda Circle 0.2.1 update
+
+Profile setup now accepts mixed-case usernames, normalizes them to lowercase, trims pasted input and explains invalid characters/length. New profiles default to personalization, listening sharing and taste sharing on, with private session off. The deployed `social_defaults` migration changes insertion defaults only; existing settings matched their pre-migration fingerprint. Transactional default/preservation and social-policy checks passed without retaining fixture accounts. Per-person influence still requires explicit selection.
+
+Lyrics sliders keep a local draft and persist once on release, with presets/reset applying immediately. The modern lyrics renderer and list state are keyed together to isolate size-dependent layout generations. Exact `lyrics-ui` 1.0.19 source inspection identified retained list state/styles and an index-based cache shared across internal crossfades. The user's terminating crash was not reproduced on a device; this update addresses that lifecycle hazard and the per-drag persistence path.
+
+The queue supports downward dragging from its header/body and an unconsumed downward pull at the top of the song list. Ordinary scrolling, reversal and cancellation remain separate from dismissal.
+
+Regression baselines failed before the fixes: profile input 3 of 5, lyrics adjustment 3 of 4, queue pull-down 4 of 5. The final `:app:testDebugUnitTest :app:assembleDebug --offline` run passed in 3 minutes 49 seconds with **266 tests, zero failures/errors/skips**. The 7 ranking tests also passed. A read-only review found no critical or important defects. Evidence is in ignored `.tools/onda-0.2.1-build.log` and JUnit reports.
+
+The fresh debug APK is 122,789,630 bytes, install ID `dev.socialmusic.app`, version `0.2.1` / code `2`, with the configured Onda public Supabase integration. SHA-256: `d743ff5501bc2e3cc8a28e5ad8f86d1330c1d49bcb27f157e13f62e8827fe94a`. Its signing certificate matches the previous Circle preview, so it can update that installation. No device is attached; touch gestures and the reported native lyrics crash still require device confirmation. Full-project lint remains incomplete.
+
+The sections below record the initial 0.2.0 Circle preview verification.
+
 ## Source and implemented increment
 
 The active application derives from LastWave main commit 3156a434d7e798a02df7e5fd47ae13f10a9c983a. The earlier independent Onda foundation is preserved under foundation/ and excluded from the active build. Source license/provenance are in LICENSE and UPSTREAM.md.

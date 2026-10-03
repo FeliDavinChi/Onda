@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.lastwave.app.ui.shell.FloatingNavDefaults
+import java.util.Locale
 
 @Composable
 fun SocialScreen(viewModel: SocialViewModel = hiltViewModel()) {
@@ -89,18 +90,28 @@ private fun AccountEntry(loading: Boolean, viewModel: SocialViewModel) {
         OutlinedTextField(password, { password = it }, Modifier.fillMaxWidth(), label = { Text("Password") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
         Button({ viewModel.signIn(email, password) }, enabled = !loading && email.isNotBlank() && password.isNotBlank(), modifier = Modifier.fillMaxWidth()) { Text("Sign in") }
         OutlinedButton({ viewModel.signUp(email, password) }, enabled = !loading && email.isNotBlank() && password.length >= 8, modifier = Modifier.fillMaxWidth()) { Text("Create account") }
-        Text("Listening sharing, taste sharing, and influence from friends start turned off.", style = MaterialTheme.typography.bodySmall)
+        Text("New profiles start with personalized recommendations, listening sharing and taste sharing enabled. You can change these in Account.", style = MaterialTheme.typography.bodySmall)
     }
 }
 
 @Composable
 private fun ProfileEntry(loading: Boolean, viewModel: SocialViewModel) {
     var username by rememberSaveable { mutableStateOf("") }; var name by rememberSaveable { mutableStateOf("") }
+    val input = SocialProfileInput(username, name)
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).imePadding().padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = FloatingNavDefaults.contentBottomPadding()), verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Text("Make yourself easy to find", style = MaterialTheme.typography.titleLarge)
-        OutlinedTextField(name, { name = it }, Modifier.fillMaxWidth(), label = { Text("Display name") }, singleLine = true)
-        OutlinedTextField(username, { username = it }, Modifier.fillMaxWidth(), label = { Text("Username") }, supportingText = { Text("3–24 lowercase letters, numbers, or underscores") }, singleLine = true)
-        Button({ viewModel.setupProfile(username, name) }, enabled = !loading && Regex("^[a-z0-9_]{3,24}$").matches(username) && name.isNotBlank()) { Text("Save profile") }
+        Text("Personalization and sharing start on. Change them in Account or turn on a private session.", style = MaterialTheme.typography.bodySmall)
+        OutlinedTextField(name, { name = it }, Modifier.fillMaxWidth(), label = { Text("Display name") }, singleLine = true,
+            isError = name.isNotEmpty() && input.displayNameError != null,
+            supportingText = { if (name.isNotEmpty()) input.displayNameError?.let { Text(it) } })
+        OutlinedTextField(username, { username = it.lowercase(Locale.ROOT) }, Modifier.fillMaxWidth(), label = { Text("Username") },
+            supportingText = { Text(if (username.isNotEmpty()) input.usernameError ?: "3–24 letters, numbers, or underscores" else "3–24 letters, numbers, or underscores") },
+            isError = username.isNotEmpty() && input.usernameError != null, singleLine = true,
+            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
+                capitalization = androidx.compose.ui.text.input.KeyboardCapitalization.None,
+                autoCorrectEnabled = false,
+            ))
+        Button({ viewModel.setupProfile(input.username, input.displayName) }, enabled = !loading && input.canSave) { Text(if (loading) "Saving profile…" else "Save profile") }
         TextButton({ viewModel.signOut() }, enabled = !loading) { Text("Sign out") }
     }
 }

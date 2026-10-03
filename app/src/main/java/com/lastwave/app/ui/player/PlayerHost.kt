@@ -181,6 +181,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
@@ -1821,6 +1822,17 @@ private fun FullPlayer(
         label = "fullPlayerDismissY",
     )
     val swipeThreshold = with(LocalDensity.current) { 88.dp.toPx() }
+    val queueDismissConnection = remember(track.videoId, track.title, currentTab, swipeThreshold) {
+        QueueSwipeDismissConnection(
+            threshold = swipeThreshold,
+            onOffsetChange = { dismissDragY = it },
+            onDraggingChange = { isDismissDragging = it },
+            onDismiss = { onTabChange(FullPlayerTab.NOW_PLAYING) },
+        )
+    }
+    DisposableEffect(queueDismissConnection) {
+        onDispose { queueDismissConnection.cancel() }
+    }
 
     // Dominant cover-art color for the ambient background glow. Extracted
     // once per track through the shared Coil loader (normally a cache hit)
@@ -1918,7 +1930,8 @@ private fun FullPlayer(
                 val playerHeight = size.height.coerceAtLeast(1f)
                 alpha = (1f - shownDismissY.coerceAtLeast(0f) / (playerHeight * 1.5f)).coerceIn(0.72f, 1f)
             }
-            .playerVerticalSwipe(enabled = currentTab == FullPlayerTab.NOW_PLAYING),
+            .playerVerticalSwipe(enabled = currentTab == FullPlayerTab.NOW_PLAYING)
+            .then(if (currentTab == FullPlayerTab.QUEUE) Modifier.nestedScroll(queueDismissConnection) else Modifier),
     ) {
         BoxWithConstraints(Modifier.fillMaxSize()) {
             val bgWidth = constraints.maxWidth.toFloat()
@@ -2515,7 +2528,8 @@ private fun FullPlayer(
                                     Modifier
                                         .fillMaxSize()
                                         .adaptiveContentWidth(maxWidth = 720.dp)
-                                        .padding(horizontal = 12.dp),
+                                        .padding(horizontal = 12.dp)
+                                        .playerVerticalSwipe(enabled = currentTab == FullPlayerTab.QUEUE),
                                 )
                             }
                         }

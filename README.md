@@ -12,11 +12,11 @@ The active application lives in `app/` and `audio/`. The earlier independent Ond
 
 ## Download
 
-[Download the Onda Circle APK](https://github.com/FeliDavinChi/Onda/releases/download/circle-preview-2026-10-04/Onda-Circle-Android.apk), or visit the [preview release](https://github.com/FeliDavinChi/Onda/releases/tag/circle-preview-2026-10-04) for its SHA-256 checksum. This development build includes the configured Onda Supabase integration. Android 10 or later is required. Review [BUILD_REPORT.md](BUILD_REPORT.md) for validation and remaining limitations.
+[Download Onda Circle 0.2.1](https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.1/Onda-Circle-0.2.1.apk), or visit the [preview release](https://github.com/FeliDavinChi/Onda/releases/tag/circle-v0.2.1) for its SHA-256 checksum. This development build includes the configured Onda Supabase integration. Android 10 or later is required. Review [BUILD_REPORT.md](BUILD_REPORT.md) for validation and remaining limitations.
 
 ## Current integration
 
-Onda's Supabase project is provisioned in Mumbai on the free plan. Its migrations and recommendations Edge Function are deployed. Android has email sign-in/signup, profile setup, follow/unfollow, shared listening, taste influence, hiding activity, blocking and privacy controls. All collection/sharing and personalization defaults are off. Follow alone does not enable influence.
+Onda's Supabase project is provisioned in Mumbai on the free plan. Its migrations and recommendations Edge Function are deployed. Android has email sign-in/signup, profile setup, follow/unfollow, shared listening, taste influence, hiding activity, blocking and privacy controls. New profiles start with personalized recommendations, listening sharing and taste sharing enabled, and private session off. Users can change each switch in Account; existing saved choices are preserved. Follow alone does not enable influence.
 
 Supabase owns transactional/social data; the versioned recommendation API can later move to Python. This first ranker uses consented listening/feedback candidates and a bounded social weight, with explainable attribution. It is not yet a full learned discovery engine.
 
