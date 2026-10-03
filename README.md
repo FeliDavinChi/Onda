@@ -12,7 +12,7 @@ The active application lives in `app/` and `audio/`. The earlier independent Ond
 
 ## Download
 
-The [Onda Circle preview release](https://github.com/FeliDavinChi/Onda/releases/tag/circle-preview-2026-10-04) contains an installable debug APK and its SHA-256 checksum. This development build includes the configured Onda Supabase integration. Android 10 or later is required. Review [BUILD_REPORT.md](BUILD_REPORT.md) for validation and remaining limitations.
+[Download the Onda Circle APK](https://github.com/FeliDavinChi/Onda/releases/download/circle-preview-2026-10-04/Onda-Circle-Android.apk), or visit the [preview release](https://github.com/FeliDavinChi/Onda/releases/tag/circle-preview-2026-10-04) for its SHA-256 checksum. This development build includes the configured Onda Supabase integration. Android 10 or later is required. Review [BUILD_REPORT.md](BUILD_REPORT.md) for validation and remaining limitations.
 
 ## Current integration
 
