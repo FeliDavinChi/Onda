@@ -48,19 +48,19 @@ if ($AcceptAndroidLicense) {
     1..20 | ForEach-Object { 'y' } | & $taskSdkManager "--sdk_root=$taskSdkHome" --licenses
     if ($LASTEXITCODE -ne 0) { throw 'License acceptance failed' }
 }
-& $taskSdkManager "--sdk_root=$taskSdkHome" 'platforms;android-35' 'build-tools;35.0.0' 'platform-tools'
+& $taskSdkManager "--sdk_root=$taskSdkHome" 'platforms;android-37.0' 'platforms;android-36' 'build-tools;36.0.0' 'platform-tools' 'ndk;28.2.13676358' 'cmake;3.22.1'
 if ($LASTEXITCODE -ne 0) { throw 'SDK installation failed' }
 $taskLocalProperties = 'sdk.dir=' + $taskSdkHome.Replace('\','/')
 Set-Content -LiteralPath (Join-Path $taskRoot 'local.properties') -Value $taskLocalProperties -Encoding Ascii
 $taskWrapperDir = Join-Path $taskRoot 'gradle/wrapper'
 New-Item -ItemType Directory -Force -Path $taskWrapperDir | Out-Null
-Download 'https://services.gradle.org/distributions/gradle-8.11.1-wrapper.jar.sha256' (Join-Path $taskTools 'wrapper.sha256')
+Download 'https://services.gradle.org/distributions/gradle-9.3.1-wrapper.jar.sha256' (Join-Path $taskTools 'wrapper.sha256')
 $taskWrapperHash = (Get-Content (Join-Path $taskTools 'wrapper.sha256') -Raw).Trim()
-Download 'https://raw.githubusercontent.com/gradle/gradle/v8.11.1/gradle/wrapper/gradle-wrapper.jar' (Join-Path $taskWrapperDir 'gradle-wrapper.jar') $taskWrapperHash
+Download 'https://raw.githubusercontent.com/gradle/gradle/v9.3.1/gradle/wrapper/gradle-wrapper.jar' (Join-Path $taskWrapperDir 'gradle-wrapper.jar') $taskWrapperHash
 if ((Get-FileHash (Join-Path $taskWrapperDir 'gradle-wrapper.jar') -Algorithm SHA256).Hash.ToLowerInvariant() -ne $taskWrapperHash) {
     throw 'Gradle wrapper checksum mismatch'
 }
-Download 'https://services.gradle.org/distributions/gradle-8.11.1-bin.zip.sha256' (Join-Path $taskTools 'gradle.sha256')
+Download 'https://services.gradle.org/distributions/gradle-9.3.1-bin.zip.sha256' (Join-Path $taskTools 'gradle.sha256')
 $taskGradleHash = (Get-Content (Join-Path $taskTools 'gradle.sha256') -Raw).Trim()
 $taskWrapperProperties = Join-Path $taskWrapperDir 'gradle-wrapper.properties'
 $taskProperties = Get-Content $taskWrapperProperties -Raw

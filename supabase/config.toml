@@ -1,0 +1,6 @@
+project_id = "onda"
+
+[functions.recommendations]
+# Handler passes the user token to auth-scoped PostgreSQL RPCs. This also
+# supports the platform's current signing-key verification behavior.
+verify_jwt = false

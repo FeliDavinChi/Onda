@@ -8,6 +8,8 @@ $env:GRADLE_USER_HOME = Join-Path $taskRoot '.tools/gradle-home'
 $env:ANDROID_HOME = Join-Path $taskRoot '.tools/android-sdk'
 Push-Location $taskRoot
 try {
-    & (Join-Path $taskRoot 'gradlew.bat') @GradleArguments
+    $taskGradle = Join-Path $taskRoot '.tools/gradle-9.3.1/bin/gradle.bat'
+    if (!(Test-Path -LiteralPath $taskGradle)) { $taskGradle = Join-Path $taskRoot 'gradlew.bat' }
+    & $taskGradle '-Djava.net.preferIPv4Stack=true' @GradleArguments
     exit $LASTEXITCODE
 } finally { Pop-Location }

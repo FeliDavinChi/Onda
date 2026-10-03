@@ -12,10 +12,10 @@ Current status: Phase 0 documents are created; the first Phase 1 foundation incr
 | 3 | Debounced cancellable unified search, album/artist/track, Explore/Home | Stale results never replace current query; loading/empty/error/retry; provider contract tests |
 | 4 | Library likes/playlists/history/offline cache | Ordering/retry/idempotency/migration tests; account partitioning |
 | 5 | Supabase email auth, optional Google, username/profile/onboarding | Session/refresh/logout/deep-link flows verified; no secret keys; server auth/schema tests |
-| 6 | Follows/block/privacy/activity/throttled now-playing | RLS visibility matrix; privacy revocation/cache purge; presence expiry |
+| 6 | Spotify-referenced follows/block/privacy/activity/throttled now-playing | RLS visibility matrix; default-off sharing/audience controls; hide activity independently of follow/chat; privacy revocation/cache purge; presence expiry |
 | 7 | One-to-one messages/outbox/Realtime/typing/reads/cursor pagination | Outsider/forged membership tests; reconnect/dedup/retry/order/device checks |
 | 8 | Typed music attachments/internal share/external chooser | Play from conversation uses the sole player; expired/missing attachments; polished accessible cards |
-| 9 | Versioned signals/taste/hybrid/diversity/exploration/explanations | Deterministic ranking/privacy/event tests; reset/opt-out/revocation |
+| 9 | Versioned signals/taste/hybrid/diversity/exploration/explanations; explicit per-person shared-taste influence | No influence from following alone; source permission and receiver selection; bounded total social weight; deterministic ranking/privacy/event tests; reset/opt-out/revocation; preserve own listening evidence |
 | 10 | Lyrics/palette cache/glass refinement/transitions/haptics | Contrast/font/TalkBack/reduced effects/frame measurements |
 | 11 | Security/offline/performance/battery/crash/release hardening | Adversarial RLS, device tests, credential/dependency/license review and release checklist |
 | 12 | Shared listening/mixes/collaboration/groups/ML | Core playback/messaging stable and supporting consented data exists |

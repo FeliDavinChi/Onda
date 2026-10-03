@@ -1,52 +1,33 @@
-# Foundation verification report
+# Onda build and backend report — 4 October 2026
 
-Branding update, 2 October 2026: the app is named **Onda**. Updated the visible app-name resource, Gradle project name and product documentation. Debug assemble and lint passed; Android `aapt dump badging` confirmed the APK application label is `Onda`. No behavior changed, so the existing behavioral test baseline below was not rerun for this rename.
+## Source and implemented increment
 
-Date: 2 October 2026 (Asia/Kolkata). Scope: Phase 0 reconnaissance and the first Phase 1 foundation increment. This is a local Git repository on `codex/foundation`, with no remote configured or publication performed.
+The active application derives from LastWave main commit 3156a434d7e798a02df7e5fd47ae13f10a9c983a. The earlier independent Onda foundation is preserved under foundation/ and excluded from the active build. Source license/provenance are in LICENSE and UPSTREAM.md.
 
-## Implemented
+Onda adds its own install identity and branding, isolated Last.fm callback, disabled upstream APK updater, independent release-signing configuration, backup exclusions, and a Circle tab. Circle includes email accounts/profile setup, following, shared listening, explicit per-person taste influence, hiding activity, blocking/unblocking, private sessions and consent controls. All playback resolves validated provider metadata through the existing player. Keystore encryption protects saved account tokens; account changes cancel old requests/results.
 
-- Eight Gradle modules: app, core/common, core/model, core/database, core/network, core/designsystem, domain/music, data/music.
-- Shared music, social, recommendation and playback-state models; provider-namespaced validated/encoded music identity.
-- Replaceable MusicSource and original deterministic metadata-only DemoMusicSource, with typed missing/unavailable errors.
-- Hilt composition, Room public metadata cache with exported v1 schema, bounded queries, atomic pruning and unique provider identity.
-- Optional Supabase Auth/Postgrest/Realtime factory; validated HTTPS/public publishable-key configuration; no app auth/config wiring or credentials embedded.
-- Lifecycle-aware catalog ViewModel, loading/empty/error/retry and cancellation handling; persisted visual-effect preference in DataStore.
-- Five-destination Compose shell, dark/light tokens and restrained tint/elevation glass; explicit local demo and deferred-feature empty states.
-- TalkBack names for navigation, scalable scroll layouts, and explicit cloud/device-transfer backup exclusions.
-- Pinned/checksummed Gradle tooling, local portable tools, atomic verified downloads, CI workflow and product/system documents.
+## Supabase evidence
 
-## Executed verification
+Created Onda project akrsrxzfwbgjhpfmpoyc in FeliDavinChi's Org, Mumbai/ap-south-1, on the confirmed $0/month free plan. The project is active/healthy. Both tracked migrations and recommendations Edge Function V1 were deployed through the connected Supabase account. The ignored Android .env contains its public URL/publishable key.
 
-```powershell
-.\scripts\test-download.ps1
-.\scripts\gradle-local.ps1 test :app:assembleDebug :app:lintDebug --console=plain
-```
+Executed tests/social_policy.sql against the real database under authenticated roles, with fixture accounts inside a rolled-back transaction. Checks passed for private defaults, raw-event isolation, rejection of arbitrary client writes, followers-only presence, follow-versus-influence separation, permission-scoped shared taste/metadata, independent activity hiding, private-session collection suppression, consent revocation, unfollow/refollow, block/unblock and own blocked controls.
 
-Both completed successfully. Final Android verification: **BUILD SUCCESSFUL**, 307 tasks, 83 executed and 224 up-to-date after the final source changes. The previous full build also succeeded; final verification repeated because theme and backup configuration changed.
+Two concurrent database sessions exercised an influence enable against blocking. Unblocking/refollowing did not restore the raced selection. A live temporary email/password account verified sign-in, private defaults, event-backed personal recommendations through the deployed function, token refresh and logout. Missing/invalid authentication was rejected. Fixture accounts were removed; auth.users count returned zero after cleanup.
 
-JUnit reports show 39 successful executions, zero failures/errors: 9 backend configuration tests; 5 music identity tests; 3 model serialization/playback-state tests; 10 source tests; and 4 ViewModel tests executed in each of debug/release/staging. That is 31 distinct behavioral tests. The download helper separately passed fixture checks for checksum validation, atomic promotion, preservation of a good file, partial cleanup and recovery.
+Security advisors reported the intentional authenticated SECURITY DEFINER RPC category only: fixed search_path, caller-derived ownership and narrow internal checks are required for these APIs. Performance advisors returned no findings after the second migration. See supabase/README.md for the remediation reference and operational details.
 
-Red/green evidence: initial identity/config/source contracts failed their behavioral tests; ViewModel's initial refresh contract failed all four tests; malformed Unicode acceptance failed its regression test before rejection was implemented. Subsequent final reports pass. The Windows wrapper propagates failures (failed test command returned exit code 1).
+## Local build evidence
 
-Android lint completed with zero errors and **39 warnings**, all dependency/AGP update notices (6 AndroidGradlePluginVersion, 33 GradleDependency). They are retained, not suppressed. The initial missing data-extraction-rules warning was fixed. The deliberately conservative pinned SDK 35/AGP 8.9 baseline must be reevaluated with dependency security and target-SDK requirements before public release.
+Portable JDK 17, Gradle 9.3.1, SDK 37.0/36, build-tools 36.0.0, NDK 28.2.13676358 and CMake 3.22.1 were installed from official distributions with checksum validation. Native audio built for arm64-v8a, armeabi-v7a, x86 and x86_64.
 
-Debug packaging emitted a native-symbol stripping notice for dependency libraries; the debug APK packages those libraries unchanged. No NDK was installed merely to strip debug artifacts. Release binary size/native tooling remain hardening checks.
+Seven ranking tests passed using Node 24. The upstream APK-opening regression was reproduced before disabling the updater. Privacy tests reproduced stale activity after a failed refresh and lingering live presence after clearing playback, then fixes were applied and independently reviewed. The first full Android suite passed 249 tests with zero failures/errors and assembled the debug APK.
 
-Outputs: `app/build/outputs/apk/debug/app-debug.apk`; HTML lint report at `app/build/reports/lint-results-debug.html`; JUnit reports under each module's `build/test-results`; Room schema at `core/database/schemas/dev.socialmusic.database.MusicDatabase/1.json`. Local build logs are in ignored `.tools/`; tools/build artifacts are not committed. The SDK/JDK/Gradle downloads were checked against their published hashes.
+The final :app:testDebugUnitTest :app:assembleDebug --offline run succeeded in 5 minutes 16 seconds: 252 tests, zero failures/errors/skips, and a fresh debug APK. Evidence is in ignored .tools/onda-final-build.log and app/build/test-results/testDebugUnitTest/. The preceding full run is in .tools/onda-verification.log; its full-project lint analysis remained active for an unusually long time and was stopped to rebuild the final source. No completed full lint result is claimed.
 
-## Review
+APK: app/build/outputs/apk/debug/app-debug.apk, application ID dev.socialmusic.app, version 0.2.0 (code 1), label Onda, min SDK 29 and target SDK 35, four native ABIs. Built public Supabase configuration is present. Size: 122309374 bytes. SHA-256: e607217a41fb0173a0e0795afe9b72e9a9d18401b888e0744569ebc91d701df5. No device installation or playback success is inferred from the build.
 
-Independent read-only review found no critical issues. Fixed its important navigation accessibility issue and minor configuration-documentation, malformed Unicode identity, and interrupted-download findings. No copied reference code/assets or application secrets were found in the source review. The parent VoiceNotes application and preexisting edits were preserved.
+## Remaining validation and product work
 
-## Unperformed checks and next gate
+No emulator or physical Android device is attached. Installation, screen layout, accessibility, actual stream playback, notifications, background service behavior and two-device friend activity still require device testing. The live API tests verify server behavior, not Android Keystore or UI execution on a device.
 
-No emulator/device launch, screenshot QA, TalkBack execution, large-font UI inspection, frame/battery measurement, Room instrumentation or real backup/restore test was run. No Supabase schema/policies were deployed or tested, and the CI workflow was created but not run remotely. Device UI checks remain necessary before declaring UI acceptance complete.
-
-Real audio/provider integration, the single MediaSessionService/player, queue and mini/full player are Phase 2. The demo deliberately cannot stream. Auth, real chat/social activity, recommendation ranking and RLS enforcement are future implementation work; architecture documents do not imply those features exist. Playback stability/device verification is the gate before advancing to discovery and social milestones.
-
-## Project relocation
-
-On 2 October 2026, the repository moved from `C:/Users/laksh/OneDrive/Documents/VoiceNotes/social-music` to the existing Onda project folder at `C:/Users/laksh/OneDrive/Documents/ChatGPT/Onda`. Both original commits, portable build tools and APK were preserved. The previous empty destination Git metadata is backed up inside ignored `.tools/transfer-empty-onda-repository.git`. The ignored SDK path was updated for the new location. The old project folder was removed by the transfer; the VoiceNotes application was not changed.
-
-Verification from the new folder passed: 39 test executions with zero failures/errors, debug APK assembly, and Android lint with zero errors and the same 39 dependency-update warnings. The APK application label remains Onda.
+The recommendation engine currently ranks bounded candidates from consented listening/feedback. It has a portable versioned API and bounded social influence; advanced catalogue discovery, diversity, model training and Python hosting remain later increments. Messaging/outbox, richer follower management, retention automation, recovery/deletion flows, configured SMTP, Realtime and release delivery remain work before a broader beta/production release. No release APK signing credentials were supplied.

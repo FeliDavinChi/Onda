@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Onda</string>
+    <string name="home">Home</string>
+    <string name="explore">Explore</string>
+    <string name="library">Library</string>
+    <string name="messages">Messages</string>
+    <string name="profile">Profile</string>
+    <string name="home_headline">Find your next favorite.</string>
+    <string name="home_subtitle">A little curiosity. A new connection.</string>
+    <string name="demo_catalog">Demo catalog</string>
+    <string name="demo_catalog_description">Original sample titles. Audio playback is not available yet.</string>
+    <string name="loading_catalog">Finding the music…</string>
+    <string name="catalog_error">We couldn’t load this collection.</string>
+    <string name="retry">Try again</string>
+    <string name="empty_catalog">There are no tracks in this collection yet.</string>
+    <string name="explore_headline">Follow your curiosity.</string>
+    <string name="explore_empty">New sounds and artist discoveries will live here.</string>
+    <string name="library_headline">Keep what moves you.</string>
+    <string name="library_empty">Your saved music and playlists will live here.</string>
+    <string name="messages_headline">Good music starts a conversation.</string>
+    <string name="messages_empty">Songs and conversations you share will live here.</string>
+    <string name="profile_headline">Make yourself at home.</string>
+    <string name="profile_empty">Your music profile will live here.</string>
+    <string name="visual_effects">Visual effects</string>
+    <string name="effect_full">Full</string>
+    <string name="effect_reduced">Reduced</string>
+    <string name="effect_minimal">Minimal</string>
+    <string name="effects_description">Choose how much depth floating surfaces use.</string>
+    <string name="preference_error">Your visual preference couldn’t be saved. Try selecting it again.</string>
+</resources>

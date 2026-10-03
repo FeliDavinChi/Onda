@@ -1,7 +1,30 @@
-pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }
+pluginManagement {
+    buildscript {
+        repositories {
+            google()
+            mavenCentral()
+            maven { url = uri("https://storage.googleapis.com/r8-releases/raw") }
+        }
+        dependencies {
+            classpath("com.android.tools:r8:9.4.14")
+        }
+    }
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url = uri("https://storage.googleapis.com/r8-releases/raw") }
+    }
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories { google(); mavenCentral() }
+    repositories {
+        google()
+        mavenCentral()
+        maven("https://jitpack.io")
+    }
 }
+
 rootProject.name = "Onda"
-include(":app", ":core:common", ":core:model", ":core:database", ":core:network", ":core:designsystem", ":domain:music", ":data:music")
+include(":app")
+include(":audio:decent-usb-audio-driver")

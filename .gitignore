@@ -9,3 +9,11 @@ local.properties
 *.keystore
 *.jks
 captures/
+.cxx/
+**/.cxx/
+.externalNativeBuild/
+**/.externalNativeBuild/
+app/src/main/cpp/SecretsBridge_generated.h
+*.apk
+*.aab
+*.log

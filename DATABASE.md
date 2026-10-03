@@ -12,6 +12,7 @@ Use PostgreSQL UUID primary keys, `timestamptz` server timestamps, foreign keys,
 | user_settings | PK user_id; individual visibility enums, opt-ins | Owner only |
 | follows | PK (follower_id, following_id); no self-follow | Related users; insert/delete by follower with blocks checked |
 | blocked_users | PK (blocker_id, blocked_id); no self-block | Blocker only; server helper checks both directions |
+| recommendation_influences | PK (receiver_id, source_user_id); no self-source; explicit enabled preference, default off | Receiver reads/writes own selections; source eligibility checked against follows, source taste-sharing audience and blocks |
 | conversations | UUID; unique canonical participant pair for direct chat | Members only; transactional creation RPC |
 | conversation_members | PK (conversation_id, user_id); exactly two for direct chat | No arbitrary client writes; authorized membership helper |
 | messages | UUID idempotency key; conversation_id/sender_id; kind; versioned payload; optional reply_id | Members read; authenticated sender inserts if interaction allowed |
@@ -42,6 +43,8 @@ Conversation creation, playlist ordering and account deletion are transactions. 
 
 `can_view(subject, viewer, surface)` evaluates the selected visibility and directed relationships: Followers means viewer follows subject; Mutuals requires both directions. Owner may read own row. Blocks deny cross-user access even for Everyone. Profile visibility never automatically exposes history. Backend eligibility is repeated at candidate generation and final recommendation serving.
 
+Selected-person recommendation influence uses shared music taste, as clarified by the user on 4 October 2026. Add a distinct taste-sharing consent/audience to `user_settings`; profile or listening visibility never grants taste reuse. `recommendation_influences` stores only the receiver's explicit selection. RLS prevents selecting/mutating on another receiver's behalf. A trusted backend derives permitted artist/genre/track affinities without exposing raw private taste vectors or the source's generated recommendation feed. Check receiver selection, current follow, source audience consent, and both directions of blocking during candidate generation and serving. Removing influence, unfollowing, blocking, or revoking source consent invalidates cached imported signals and explanations. Re-follow/unblock must not automatically restore selection. Keep the receiver's independent listens/likes/saves separate from removable imported scores.
+
 Avoid recursive RLS by using narrowly scoped membership/visibility helper functions in an unexposed schema. If SECURITY DEFINER is necessary, set an empty/fixed search_path, qualify tables, bind decisions to auth.uid(), revoke default execution grants and audit permitted callers. Do not expose a generic function that accepts an arbitrary viewer to leak private relationships. Public views must preserve caller RLS (security invoker) or remain unavailable to client roles. Service-role bypass is never an Android capability.
 
 Realtime table events respect authorized database reads; private Broadcast/Presence channels require their own membership authorization. Guessing a conversation topic is not membership. On reconnect or block/privacy change, unsubscribe/re-authorize and purge stale social data. FCM/push delivery uses a trusted function, never a client-held secret or private message text in analytics.
@@ -58,6 +61,7 @@ Run SQL integration tests with four users (A/B members, outsider C, blocked D) a
 - Pair creation repeated/concurrent returns one authorized direct conversation.
 - A cannot change owner_id or use UPDATE to escape INSERT constraints.
 - Every visibility surface is tested for owner, follower, mutual, unrelated and blocked viewers.
+- A follow alone never enables recommendation influence; another user cannot forge a receiver's selection or obtain private source taste by inserting a preference. Source consent/follow/block revocation invalidates imported scores and attribution, including cached results; re-follow/unblock does not restore selection.
 - Blocking prevents new messages/follows/presence/social contributions in both directions; prior member history follows documented retention rules.
 - Private playlist_tracks are unreadable through joins or direct requests; reordering is atomic.
 - Feedback/taste/events/settings/device tokens are private, including via views/functions.
