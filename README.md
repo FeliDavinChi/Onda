@@ -92,6 +92,12 @@ The first recommendation ranker uses consented listening and feedback, with boun
 
 [Architecture](ARCHITECTURE.md) · [Build report](BUILD_REPORT.md) · [Roadmap](ROADMAP.md)
 
+## Contributor guides
+
+- Circle user behavior and device checks are covered in the [privacy guide](docs/CIRCLE_PRIVACY.md) and [two-account smoke test](docs/CIRCLE_SMOKE_TEST.md).
+- For build verification and asset changes, see [Android build checks](docs/ANDROID_CHECKS.md) and [Android branding](docs/ANDROID_BRANDING.md).
+- For server checks and app integration, see [Circle backend checks](docs/CIRCLE_BACKEND_CHECKS.md) and the [recommendations API](docs/RECOMMENDATION_API.md).
+
 ## Credits and license
 
 Onda is an independent derivative of [LastWave-Native by Clash-Projects](https://github.com/Clash-Projects/LastWave-Native), imported at [`3156a434`](https://github.com/Clash-Projects/LastWave-Native/commit/3156a434d7e798a02df7e5fd47ae13f10a9c983a). Its player, catalogue, library, interface and native audio engine build on LastWave's work. Spotify's friend activity experience informed the design of Circle.
