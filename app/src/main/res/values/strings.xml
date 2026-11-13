@@ -2,6 +2,7 @@
 <resources>
     <string name="nav_social">Circle</string>
     <string name="app_name">Onda</string>
+    <string name="notification_now_playing_brand">ONDA • NOW PLAYING</string>
     <string name="widget_name">Onda Player</string>
     <string name="widget_description">Artwork, track details and playback controls for every media app</string>
     <string name="widget_obsidian_name">Onda Obsidian Glass</string>

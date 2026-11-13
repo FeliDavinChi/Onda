@@ -103,15 +103,17 @@ class DiscordPresenceTest {
     }
 
     @Test
-    fun artworkFallsBackToLogoWhenNotHttp() {
+    fun artworkFallsBackToOndaLogoWhenNotHttp() {
+        val ondaIcon =
+            "https://raw.githubusercontent.com/FeliDavinChi/Onda/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
         assertEquals(
             "https://lh3.googleusercontent.com/cover=abc",
             str(DiscordPresence.buildActivity(state(), NOW_MS)["assets"], "large_image"),
         )
         // A local file path cannot be fetched by Discord, and neither can a
-        // missing one — both fall back to the uploaded logo key.
+        // missing one — both fall back to the public Onda icon.
         assertEquals(
-            "logo",
+            ondaIcon,
             str(
                 DiscordPresence.buildActivity(
                     state(track = track(artworkUrl = "/data/user/0/com.lastwave.app/files/cover.jpg")),
@@ -121,7 +123,7 @@ class DiscordPresenceTest {
             ),
         )
         assertEquals(
-            "logo",
+            ondaIcon,
             str(DiscordPresence.buildActivity(state(track = track(artworkUrl = null)), NOW_MS)["assets"], "large_image"),
         )
     }

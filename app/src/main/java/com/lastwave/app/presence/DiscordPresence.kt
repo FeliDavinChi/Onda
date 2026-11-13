@@ -17,8 +17,8 @@ import kotlinx.serialization.json.putJsonArray
  * Ported field for field from the desktop client
  * (`LastWave-Desktop/lib/features/presence/discord_presence_service.dart`) so a
  * user's profile reads identically on both apps: same application id, same
- * `type`, same line layout, same two buttons, same asset keys, same clip
- * lengths. Only the transport differs (see [DiscordSdkTransport]) — on Android
+ * `type`, same line layout, same two buttons, same clip
+ * lengths. Only the transport differs (see [DiscordIpcTransport]) — on Android
  * the Discord app itself hosts the endpoint, so there is no `discord-ipc-N`
  * socket to hand-roll the way the desktop build does.
  *
@@ -34,8 +34,7 @@ import kotlinx.serialization.json.putJsonArray
  * ```
  *
  * Deliberately free of Android and Discord SDK types: every rule here is pure,
- * so the format is unit-testable on the JVM and can never drift from the
- * desktop client's without a test failing.
+ * so the format can be tested on the JVM.
  *
  * Quality is only ever what was measured. Where the desktop client could read a
  * real channel count off its output device, [MusicPlayerState] has no such
@@ -77,8 +76,8 @@ object DiscordPresence {
      */
     const val RETRY_INTERVAL_MS = 15_000L
 
-    /** Asset key the desktop client uploads as the LastWave logo. */
-    const val FALLBACK_ASSET = "logo"
+    /** Public Onda artwork used when Discord cannot fetch a track cover. */
+    const val FALLBACK_ASSET = "https://raw.githubusercontent.com/FeliDavinChi/Onda/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png"
 
     /** 2 = "Listening to". */
     const val TYPE_LISTENING = 2
@@ -188,7 +187,7 @@ object DiscordPresence {
         }
 
         // Discord fetches external images itself but will not render a URL that
-        // is not http(s) — local file paths fall back to the uploaded logo key.
+        // is not http(s) — local file paths fall back to the public Onda icon.
         val artwork = track.artworkUrl?.trim().orEmpty()
         val artIsUrl = artwork.startsWith("http://") || artwork.startsWith("https://")
         val album = track.album?.trim().orEmpty()
