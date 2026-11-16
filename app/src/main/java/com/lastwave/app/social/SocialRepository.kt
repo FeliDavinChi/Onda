@@ -56,6 +56,7 @@ class SocialRepository @Inject constructor(@ApplicationContext context: Context)
                     val result = runCatching { response.use {
                         val value = it.body?.string().orEmpty()
                         if (!it.isSuccessful) {
+                            if (path.startsWith("/auth/v1/")) throw IllegalStateException(socialAuthErrorMessage(it.code, value))
                             val error = runCatching { JSONObject(value).optString("msg").ifBlank { JSONObject(value).optString("message").ifBlank { JSONObject(value).optString("error") } } }.getOrDefault("")
                             throw IllegalStateException(error.ifBlank { if (it.code == 401) "Your session expired. Sign in again." else "Could not connect. Please try again." }.take(250))
                         }
@@ -86,9 +87,13 @@ class SocialRepository @Inject constructor(@ApplicationContext context: Context)
     }
     suspend fun signUp(email: String, password: String): Boolean = refreshMutex.withLock {
         require(password.length >= 8) { "Use a password with at least 8 characters" }
-        val result = JSONObject(request("/auth/v1/signup", JSONObject().put("email", email.trim()).put("password", password)))
-        if (result.optString("access_token").isNotBlank()) { saveSession(result); true }
-        else false // Email verification is required; no pretend signed-in state.
+        val response = request("/auth/v1/signup", JSONObject().put("email", email.trim()).put("password", password))
+        val hasSession = signupHasSession(response)
+        if (hasSession) saveSession(JSONObject(response))
+        hasSession
+    }
+    suspend fun resendConfirmation(email: String) = refreshMutex.withLock {
+        request("/auth/v1/resend", JSONObject().put("email", email.trim()).put("type", "signup"))
     }
     suspend fun signOut() = withContext(NonCancellable) {
         refreshMutex.withLock {

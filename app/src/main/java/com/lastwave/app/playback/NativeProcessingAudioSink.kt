@@ -163,6 +163,7 @@ class NativeProcessingAudioSink(
             bitPerfectAtConfigure = true
             return
         }
+        if (usbExclusive) leaveExclusiveUsb(configureAndroid = false)
 
         if (bitPerfectRequested) {
             Log.i(
@@ -419,45 +420,10 @@ class NativeProcessingAudioSink(
     ): Boolean {
         maybeAdoptExclusiveUsb()
         if (usbExclusive) {
-            if (exclusiveUsb?.isPaused() == true) {
-                return false
-            }
-            if (isExclusiveConverting()) {
-                return handleExclusiveConvertedBuffer(buffer, presentationTimeUs)
-            }
-            val fmt = configuredFormat
-            val gain = exclusiveUsb?.softwareGain() ?: lastVolume
-            val needsGain = gain < 1f - 1e-6f && gain >= 0f && buffer.hasRemaining() &&
-                fmt?.sampleMimeType == MimeTypes.AUDIO_RAW
-            if (needsGain && fmt != null) {
-                if (lastGainBuffer !== buffer) {
-                    scalePcmInPlace(buffer, buffer.position(), buffer.limit(), fmt.pcmEncoding, gain)
-                    lastGainBuffer = buffer
-                }
-            } else {
-                lastGainBuffer = null
-            }
-            val ok = exclusiveUsb?.write(
-                buffer,
-                presentationTimeUs,
-                isFloatBuffer = fmt?.pcmEncoding == C.ENCODING_PCM_FLOAT,
-            ) == true
-            if (ok) {
-                exclusiveEnded = false
-                return true
-            }
-            // Queue full: the DAC is still running. Return false so ExoPlayer
-            // retries and keeps loading the network. Tearing the session down
-            // here is what left the bar moving with the pause control spinning.
-            if (exclusiveUsb?.isStreamAlive() == true) {
-                return false
-            }
-            // A seek discards in-flight URBs. The first write after that can
-            // fail once; tearing the USB session down here is what left the
-            // DAC silent while the seek bar kept moving.
-            if (exclusiveUsb?.restartIfStopped() == true) {
-                return false
-            }
+            val handled = handleExclusiveBuffer(buffer, presentationTimeUs)
+            if (handled != null) return handled
+
+            Log.w(TAG, "Exclusive USB output stopped; switching to Android audio output")
             exclusiveStartFailed = true
             leaveExclusiveUsb(configureAndroid = true)
         }
@@ -483,6 +449,40 @@ class NativeProcessingAudioSink(
             if (!switchToPlatformFallback("Processed PCM16 retry linkage failed", retryError)) throw retryError
             fallbackDelegate.handleBuffer(buffer, presentationTimeUs, encodedAccessUnitCount)
         }
+    }
+
+    /** Null means the exclusive route failed and the Android sink must take over. */
+    private fun handleExclusiveBuffer(buffer: ByteBuffer, presentationTimeUs: Long): Boolean? {
+        val session = exclusiveUsb ?: return null
+        if (session.isPaused()) return false
+        if (!session.isStreamAlive()) return null
+
+        val handled = if (isExclusiveConverting()) {
+            try {
+                handleExclusiveConvertedBuffer(buffer, presentationTimeUs) ?: return null
+            } catch (error: Exception) {
+                Log.w(TAG, "Exclusive USB conversion failed", error)
+                return null
+            } catch (error: LinkageError) {
+                Log.w(TAG, "Exclusive USB conversion linkage failed", error)
+                return null
+            }
+        } else {
+            val format = configuredFormat ?: return null
+            val gain = session.softwareGain()
+            val needsGain = gain < 1f - 1e-6f && gain >= 0f && buffer.hasRemaining() &&
+                format.sampleMimeType == MimeTypes.AUDIO_RAW
+            if (needsGain && lastGainBuffer !== buffer) {
+                scalePcmInPlace(buffer, buffer.position(), buffer.limit(), format.pcmEncoding, gain)
+                lastGainBuffer = buffer
+            } else if (!needsGain) {
+                lastGainBuffer = null
+            }
+            session.write(buffer, presentationTimeUs, isFloatBuffer = format.pcmEncoding == C.ENCODING_PCM_FLOAT)
+        }
+        if (handled) exclusiveEnded = false
+        // A live, full queue is ordinary backpressure. A stopped writer cannot accept a retry.
+        return if (handled || session.isStreamAlive()) handled else null
     }
 
     /**
@@ -978,39 +978,34 @@ class NativeProcessingAudioSink(
      * Converted exclusive write: source PCM through native soxr at the
      * fallback rate, straight into the USB queue (Float32, same path float
      * decoder output already takes). Mirrors the pending discipline of
-     * [handleProcessedBuffer]: leftovers drain first and new input is only
-     * consumed once its output is fully written or stashed — never
-     * double-fed on retry.
+     * [handleProcessedBuffer]. Retain the source buffer until the USB queue
+     * accepts its output, so Android can use the same input if USB stops.
      */
-    private fun handleExclusiveConvertedBuffer(buffer: ByteBuffer, presentationTimeUs: Long): Boolean {
-        pendingUsbFloat?.let { pending ->
-            if (pending.hasRemaining()) {
-                if (!writeConvertedToUsb(pending, pendingUsbPtsUs)) return false
-                pendingUsbFloat = null
+    private fun handleExclusiveConvertedBuffer(buffer: ByteBuffer, presentationTimeUs: Long): Boolean? {
+        val pending = pendingUsbFloat
+        if (pending != null) {
+            if (pending.hasRemaining() && !writeConvertedToUsb(pending, pendingUsbPtsUs)) return false
+            pendingUsbFloat = null
+        } else {
+            if (!buffer.hasRemaining()) return true
+            val source = configuredFormat ?: return null
+            val activeUsbRate = exclusiveUsb?.currentRateHz()?.takeIf { it > 0 && it != source.sampleRate }
+            val target = activeUsbRate
+                ?: exclusiveFallbackRateHz?.takeIf { hz ->
+                    hz > 0 && hz != source.sampleRate &&
+                        (exclusiveFallbackSourceRateHz == null || exclusiveFallbackSourceRateHz == source.sampleRate)
+                }
+                ?: return null
+            if (exclusiveConvertSourceHz != source.sampleRate || processor.nativeOutputSampleRate != target) {
+                if (!setupExclusiveConverter(source, target)) return null
             }
-        }
-        if (!buffer.hasRemaining()) return true
-        val source = configuredFormat ?: return false
-        val activeUsbRate = exclusiveUsb?.currentRateHz()?.takeIf { it > 0 && it != source.sampleRate }
-        val target = activeUsbRate
-            ?: exclusiveFallbackRateHz?.takeIf { hz ->
-                hz > 0 && hz != source.sampleRate &&
-                    (exclusiveFallbackSourceRateHz == null || exclusiveFallbackSourceRateHz == source.sampleRate)
-            }
-            ?: return false
-        if (exclusiveConvertSourceHz != source.sampleRate || processor.nativeOutputSampleRate != target) {
-            // Seek/flush raced the converter; rebuild cheaply inline.
-            // Failing closed here returns false and the render watchdog
-            // owns the worst case — never feed unconverted bytes.
-            if (!setupExclusiveConverter(source, target)) return false
+            processor.queueInput(buffer.duplicate())
         }
         // Volume parity with the raw exclusive path (keys must work here
         // too); unity otherwise. Scaled once per fresh chunk — stashed
         // chunks are never re-scaled on retry.
         val session = exclusiveUsb
         val gain = session?.softwareGain() ?: lastVolume
-        processor.queueInput(buffer.duplicate())
-        buffer.position(buffer.limit())
         var guard = 0
         while (guard++ < 32) {
             val out = processor.getOutput()
@@ -1024,6 +1019,7 @@ class NativeProcessingAudioSink(
                 return false
             }
         }
+        buffer.position(buffer.limit())
         return true
     }
 

@@ -9,7 +9,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        externalNativeBuild { cmake { cppFlags("-fno-fast-math") } }
     }
 
     buildTypes {
@@ -20,10 +19,6 @@ android {
             isMinifyEnabled = false
         }
     }
-
-//     externalNativeBuild {
-//         cmake { path("src/main/jni/CMakeLists.txt") }
-//     }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17

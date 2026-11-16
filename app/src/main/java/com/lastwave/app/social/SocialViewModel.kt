@@ -62,7 +62,14 @@ class SocialViewModel @Inject constructor(private val repository: SocialReposito
     }
     fun signIn(email: String, password: String) = perform { repository.signIn(email, password) }
     fun signUp(email: String, password: String) = perform {
-        if (!repository.signUp(email, password)) _state.update { it.copy(message = "Check your email to confirm your account, then sign in.") }
+        if (!repository.signUp(email, password)) showConfirmationInstructions()
+    }
+    fun resendConfirmation(email: String) = perform {
+        repository.resendConfirmation(email)
+        showConfirmationInstructions()
+    }
+    private fun showConfirmationInstructions() {
+        _state.update { it.copy(message = "Check your inbox and spam folder for a confirmation link. After confirming, return to Onda and sign in.") }
     }
     fun signOut() { generation++; action?.cancel(); action = null; perform { repository.signOut() } }
     fun setupProfile(username: String, name: String) = perform {

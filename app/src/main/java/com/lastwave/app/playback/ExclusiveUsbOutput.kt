@@ -316,20 +316,20 @@ class ExclusiveUsbOutput @Inject constructor(
         recheckClockLocked()
         val chunk = if (isFloatBuffer) {
             val floats = FloatArray(size / Float.SIZE_BYTES)
-            buffer.order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().get(floats)
-            buffer.position(buffer.limit())
+            buffer.duplicate().order(ByteOrder.LITTLE_ENDIAN).asFloatBuffer().get(floats)
             QueuedPcm(floats, null, 0, size)
         } else {
             val encoding = writeRawEncoding(sourceEncoding)
             if (encoding < 0) return false
             val bytes = ByteArray(size)
-            buffer.get(bytes)
+            buffer.duplicate().get(bytes)
             QueuedPcm(null, bytes, encoding, size)
         }
         synchronized(pcmLock) {
-            if (paused || writerStop) return false
+            if (paused || writerStop || stream !== running) return false
             pcmQueue.addLast(chunk)
             queuedBytes += size
+            buffer.position(buffer.limit())
             pcmLock.notifyAll()
         }
         return true
@@ -371,23 +371,6 @@ class ExclusiveUsbOutput @Inject constructor(
             paused = false
             pcmLock.notifyAll()
         }
-    }
-
-    /**
-     * The stream stopped without the device being closed. [flush] discards
-     * leftover URBs and marks it running again. [start] would zero the DAC
-     * clock and make the sink position jump back to the beginning.
-     */
-    fun restartIfStopped(): Boolean {
-        val running = stream ?: return false
-        if (running.isAlive) return false
-        if (!running.start()) return false
-        synchronized(lock) {
-            paused = false
-            mediaTimeBaseFrames = running.framesWritten
-        }
-        Log.i(TAG, "seek rearmed clock=${running.framesWritten} startUs=$startMediaTimeUs")
-        return true
     }
 
     fun handleDiscontinuity() {

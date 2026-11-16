@@ -2,6 +2,7 @@ package com.lastwave.app.social
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.*
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -86,10 +88,13 @@ private fun AccountEntry(loading: Boolean, viewModel: SocialViewModel) {
         Text("Sign in to Onda", style = MaterialTheme.typography.titleLarge)
         Text("Your music account is separate from your Last.fm or YouTube connection.")
         OutlinedTextField(email, { email = it }, Modifier.fillMaxWidth(), label = { Text("Email") }, singleLine = true,
-            keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = androidx.compose.ui.text.input.KeyboardType.Email))
-        OutlinedTextField(password, { password = it }, Modifier.fillMaxWidth(), label = { Text("Password") }, singleLine = true, visualTransformation = PasswordVisualTransformation())
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email))
+        OutlinedTextField(password, { password = it }, Modifier.fillMaxWidth(), label = { Text("Password") }, singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), visualTransformation = PasswordVisualTransformation(),
+            supportingText = { if (password.length < 8) Text("New accounts need at least 8 characters.") })
         Button({ viewModel.signIn(email, password) }, enabled = !loading && email.isNotBlank() && password.isNotBlank(), modifier = Modifier.fillMaxWidth()) { Text("Sign in") }
         OutlinedButton({ viewModel.signUp(email, password) }, enabled = !loading && email.isNotBlank() && password.length >= 8, modifier = Modifier.fillMaxWidth()) { Text("Create account") }
+        TextButton({ viewModel.resendConfirmation(email) }, enabled = !loading && email.isNotBlank()) { Text("Resend confirmation email") }
         Text("New profiles start with personalized recommendations, listening sharing and taste sharing enabled. You can change these in Account.", style = MaterialTheme.typography.bodySmall)
     }
 }

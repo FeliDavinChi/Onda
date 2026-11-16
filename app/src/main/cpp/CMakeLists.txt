@@ -12,6 +12,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # library inherits the same alignment.
 add_link_options("-Wl,-z,max-page-size=16384")
 
+# The USB stream loads decent_usb_audio via JNI. Build it with the app's
+# NDK, ABI selection, and page-size settings so every APK can open a DAC.
+add_subdirectory("../../../../audio/decent-usb-audio-driver/src/main/jni" decent_usb_audio)
+
 find_package(oboe REQUIRED CONFIG)
 
 # libsoxr 0.1.3 is pinned for reproducible HQ sinc resampling. It is built as

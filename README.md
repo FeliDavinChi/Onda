@@ -7,18 +7,18 @@
 <p align="center">A native Android music player with shared listening and discovery through Onda Circle.</p>
 
 <p align="center">
-  <strong><a href="https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.1/Onda-Circle-0.2.1.apk">Download Onda Circle 0.2.1</a></strong>
+  <strong><a href="https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.2/Onda-Circle-0.2.2.apk">Download Onda Circle 0.2.2</a></strong>
   &nbsp;·&nbsp;
-  <a href="https://github.com/FeliDavinChi/Onda/releases/tag/circle-v0.2.1">Release notes and SHA-256</a>
+  <a href="https://github.com/FeliDavinChi/Onda/releases/tag/circle-v0.2.2">Release notes and SHA-256</a>
 </p>
 
 ## Install
 
-The **0.2.1 preview** requires **Android 10 or later** and includes the Onda Supabase integration. See the [build report](BUILD_REPORT.md) for completed checks and remaining device validation.
+The **0.2.2 preview** requires **Android 10 or later** and includes the Onda Supabase integration. See the [release notes](https://github.com/FeliDavinChi/Onda/releases/tag/circle-v0.2.2) for changes and verification status.
 
 ### Verify the download
 
-Run `Get-FileHash .\Onda-Circle-0.2.1.apk -Algorithm SHA256` in PowerShell, or `sha256sum Onda-Circle-0.2.1.apk` on Linux. Compare the result with the [published SHA-256 file](https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.1/Onda-Circle-0.2.1.apk.sha256).
+Run `Get-FileHash .\Onda-Circle-0.2.2.apk -Algorithm SHA256` in PowerShell, or `sha256sum Onda-Circle-0.2.2.apk` on Linux. Compare the result with the [published SHA-256 file](https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.2/Onda-Circle-0.2.2.apk.sha256).
 
 ## Onda Circle
 
