@@ -1,40 +1,64 @@
-# Onda
+<p align="center">
+  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" width="88" height="88" alt="Onda logo">
+</p>
 
-A native Android music app built from LastWave, with an Onda Circle for following friends, seeing shared listening and explicitly blending a person's shared music taste into recommendations.
+<h1 align="center">Onda</h1>
 
-## Fork and inspiration
+<p align="center">A native Android music player with shared listening and discovery through Onda Circle.</p>
 
-Onda is a fork and modified derivative of [LastWave-Native by Clash-Projects](https://github.com/Clash-Projects/LastWave-Native), imported from commit [`3156a434`](https://github.com/Clash-Projects/LastWave-Native/commit/3156a434d7e798a02df7e5fd47ae13f10a9c983a). It substantially reuses LastWave's Android application, player, catalogue, library, interface and native audio engine. Credit for that foundation belongs to LastWave and its contributors.
+<p align="center">
+  <strong><a href="https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.1/Onda-Circle-0.2.1.apk">Download Onda Circle 0.2.1</a></strong>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/FeliDavinChi/Onda/releases/tag/circle-v0.2.1">Release notes and SHA-256</a>
+</p>
 
-Onda adds its own social backend and Circle: following, shared listening, privacy controls and an explicit choice to blend a friend's shared music taste into recommendations. Spotify's following and friend activity experience informs the social interaction design.
+## Onda Circle
 
-The active application lives in `app/` and `audio/`. The earlier independent Onda foundation is preserved in `foundation/`. See [UPSTREAM.md](UPSTREAM.md) for source provenance and modifications. LastWave's [GPL-3.0 license](LICENSE) and notices are preserved; Onda is distributed under that license. Onda is an independent project.
+- **Follow friends.** See listening activity that people you follow have chosen to share.
+- **Blend tastes.** Choose whose shared taste should inform your recommendations. Following someone leaves this choice off.
+- **Control sharing.** Use Account to manage personalization, listening activity, taste sharing, private sessions and blocked accounts. New profiles start with personalization, listening sharing and taste sharing on, and private session off.
 
-## Download
+The **0.2.1 preview** requires **Android 10 or later** and includes the Onda Supabase integration. See the [build report](BUILD_REPORT.md) for completed checks and remaining device validation.
 
-[Download Onda Circle 0.2.1](https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.1/Onda-Circle-0.2.1.apk), or visit the [preview release](https://github.com/FeliDavinChi/Onda/releases/tag/circle-v0.2.1) for its SHA-256 checksum. This development build includes the configured Onda Supabase integration. Android 10 or later is required. Review [BUILD_REPORT.md](BUILD_REPORT.md) for validation and remaining limitations.
+## Build from source
 
-## Current integration
+| Tool | Version |
+| --- | --- |
+| JDK | 17 |
+| Gradle wrapper | 9.3.1 |
+| Android SDK platforms | 37.0 and 36 |
+| Android build tools | 36.0.0 |
+| NDK | 28.2.13676358 |
+| CMake | 3.22.1 |
+| Node.js, for ranking tests | 24 |
 
-Onda's Supabase project is provisioned in Mumbai on the free plan. Its migrations and recommendations Edge Function are deployed. Android has email sign-in/signup, profile setup, follow/unfollow, shared listening, taste influence, hiding activity, blocking and privacy controls. New profiles start with personalized recommendations, listening sharing and taste sharing enabled, and private session off. Users can change each switch in Account; existing saved choices are preserved. Follow alone does not enable influence.
-
-Supabase owns transactional/social data; the versioned recommendation API can later move to Python. This first ranker uses consented listening/feedback candidates and a bounded social weight, with explainable attribution. It is not yet a full learned discovery engine.
-
-## Build
-
-Use JDK 17, Gradle 9.3.1, SDK platforms 37.0 and 36, build-tools 36.0.0, NDK 28.2.13676358 and CMake 3.22.1. Set JAVA_HOME and ANDROID_HOME, or use ignored local.properties for sdk.dir.
+Set `JAVA_HOME` and `ANDROID_HOME` for an installed toolchain, or set `sdk.dir` in ignored `local.properties`. Run these commands from the repository root on Windows.
 
 ```powershell
-.\scripts\gradle-local.ps1 :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --console=plain
+.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --console=plain
 node --experimental-strip-types --test supabase/functions/recommendations/ranking.test.ts
 ```
 
-For a fresh Windows checkout, scripts/bootstrap-tools.ps1 downloads verified tools. Pass -AcceptAndroidLicense only after reviewing the Android SDK terms. The local tools/cache live in ignored .tools/. A normal SDK/JDK installation can use gradlew.bat directly.
+For the portable Windows toolchain, see the [tool bootstrap script](scripts/bootstrap-tools.ps1) and [additional SDK packages script](scripts/bootstrap-fork-tools.ps1). Review the Android SDK terms before passing `-AcceptAndroidLicense`. Once the portable tools are installed, use `.\scripts\gradle-local.ps1` in place of `.\gradlew.bat`.
 
-Copy .env.example to ignored .env and supply ONDA_SUPABASE_URL and ONDA_SUPABASE_PUBLISHABLE_KEY. Only a public sb_publishable_ key is accepted by Android. Never add a service-role or secret key. Unconfigured builds show account availability honestly and retain music browsing/playback.
+### Connect Circle to Supabase
 
-## Verification and remaining work
+Copy [`.env.example`](.env.example) to ignored `.env` and set `ONDA_SUPABASE_URL` and `ONDA_SUPABASE_PUBLISHABLE_KEY`. Android accepts a public `sb_publishable_` key. Builds without Circle configuration still support music browsing and playback.
 
-See BUILD_REPORT.md for executed checks and exact limitations, ARCHITECTURE.md for boundaries, and supabase/README.md for deployment and tests. No emulator or Android device is currently attached; screen, background playback and notification testing remain necessary. Supabase email confirmation follows project configuration; public email delivery needs a configured SMTP provider before a wider beta.
+The first recommendation ranker uses consented listening and feedback, with bounded influence from selected people and attribution for why a track appeared. See the [backend guide](supabase/README.md) for deployment and verification.
 
-This implementation increment is not a production release. Messaging, recovery/deletion flows, richer catalogue recommendations and broader social management remain in the product roadmap.
+## Repository guide
+
+| Path | Purpose |
+| --- | --- |
+| [`app/`](app/) and [`audio/`](audio/) | Active Android app, playback and native audio |
+| [`supabase/`](supabase/) | Circle database, policies and recommendations Edge Function |
+| [`foundation/`](foundation/) | Archived independent Onda prototype |
+
+[Architecture](ARCHITECTURE.md) · [Build report](BUILD_REPORT.md) · [Roadmap](ROADMAP.md)
+
+## Credits and license
+
+Onda is an independent derivative of [LastWave-Native by Clash-Projects](https://github.com/Clash-Projects/LastWave-Native), imported at [`3156a434`](https://github.com/Clash-Projects/LastWave-Native/commit/3156a434d7e798a02df7e5fd47ae13f10a9c983a). Its player, catalogue, library, interface and native audio engine build on LastWave's work. Spotify's friend activity experience informed the design of Circle.
+
+Onda preserves upstream notices and is distributed under the [GNU GPL v3](LICENSE). See [source provenance](UPSTREAM.md) for the original source and Onda's modifications.
