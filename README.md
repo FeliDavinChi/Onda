@@ -68,13 +68,15 @@ node --experimental-strip-types --test supabase/functions/recommendations/rankin
 
 For the portable Windows toolchain, see the [tool bootstrap script](scripts/bootstrap-tools.ps1) and [additional SDK packages script](scripts/bootstrap-fork-tools.ps1). Review the Android SDK terms before passing `-AcceptAndroidLicense`. Once the portable tools are installed, use `.\scripts\gradle-local.ps1` in place of `.\gradlew.bat`.
 
+If Gradle reports an access error while replacing generated resources under OneDrive, use a checkout outside the synced folder. This also gives Gradle and CMake local output paths for intermediates and native libraries.
+
 ### Build outputs
 
 The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`. The [Android workflow](.github/workflows/android.yml) runs the tests, debug build and lint, then uploads the APK and verification reports as workflow artifacts.
 
 ### Connect Circle to Supabase
 
-Copy [`.env.example`](.env.example) to ignored `.env` and set `ONDA_SUPABASE_URL` and `ONDA_SUPABASE_PUBLISHABLE_KEY`. Android accepts a public `sb_publishable_` key. Builds without Circle configuration still support music browsing and playback.
+Copy [`.env.example`](.env.example) to ignored `.env` and set `ONDA_SUPABASE_URL` and `ONDA_SUPABASE_PUBLISHABLE_KEY`. Use the public `sb_publishable_` key. Environment variables take precedence over Gradle project properties, which take precedence over local file settings. In local files, `.env` values override matching `local.properties` entries. Builds without Circle configuration still support music browsing and playback.
 
 The first recommendation ranker uses consented listening and feedback, with bounded influence from selected people and attribution for why a track appeared. See the [backend guide](supabase/README.md) for deployment and verification.
 
@@ -85,6 +87,8 @@ The first recommendation ranker uses consented listening and feedback, with boun
 | [`app/`](app/) and [`audio/`](audio/) | Active Android app, playback and native audio |
 | [`supabase/`](supabase/) | Circle database, policies and recommendations Edge Function |
 | [`foundation/`](foundation/) | Archived independent Onda prototype |
+| [`scripts/`](scripts/) | Windows build tooling and the live Supabase verification script |
+| [`.github/workflows/android.yml`](.github/workflows/android.yml) | Android checks and build artifacts |
 
 [Architecture](ARCHITECTURE.md) · [Build report](BUILD_REPORT.md) · [Roadmap](ROADMAP.md)
 
