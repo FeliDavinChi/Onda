@@ -46,14 +46,31 @@ To let a friend influence your **For you** recommendations, turn on **Influence 
 | CMake | 3.22.1 |
 | Node.js, for ranking tests | 24 |
 
-Set `JAVA_HOME` and `ANDROID_HOME` for an installed toolchain, or set `sdk.dir` in ignored `local.properties`. Run these commands from the repository root on Windows.
+Set `JAVA_HOME` and `ANDROID_HOME` for an installed toolchain, or set `sdk.dir` in ignored `local.properties`. Run the Gradle wrapper from the repository root.
+
+**Windows PowerShell**
 
 ```powershell
 .\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --console=plain
+```
+
+**Linux or macOS**
+
+```bash
+./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug --console=plain
+```
+
+With Node.js 24, run the ranking tests on either platform.
+
+```sh
 node --experimental-strip-types --test supabase/functions/recommendations/ranking.test.ts
 ```
 
 For the portable Windows toolchain, see the [tool bootstrap script](scripts/bootstrap-tools.ps1) and [additional SDK packages script](scripts/bootstrap-fork-tools.ps1). Review the Android SDK terms before passing `-AcceptAndroidLicense`. Once the portable tools are installed, use `.\scripts\gradle-local.ps1` in place of `.\gradlew.bat`.
+
+### Build outputs
+
+The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`. The [Android workflow](.github/workflows/android.yml) runs the tests, debug build and lint, then uploads the APK and verification reports as workflow artifacts.
 
 ### Connect Circle to Supabase
 
