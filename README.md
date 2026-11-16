@@ -12,13 +12,27 @@
   <a href="https://github.com/FeliDavinChi/Onda/releases/tag/circle-v0.2.1">Release notes and SHA-256</a>
 </p>
 
+## Install
+
+The **0.2.1 preview** requires **Android 10 or later** and includes the Onda Supabase integration. See the [build report](BUILD_REPORT.md) for completed checks and remaining device validation.
+
+### Verify the download
+
+Run `Get-FileHash .\Onda-Circle-0.2.1.apk -Algorithm SHA256` in PowerShell, or `sha256sum Onda-Circle-0.2.1.apk` on Linux. Compare the result with the [published SHA-256 file](https://github.com/FeliDavinChi/Onda/releases/download/circle-v0.2.1/Onda-Circle-0.2.1.apk.sha256).
+
 ## Onda Circle
 
 - **Follow friends.** See listening activity that people you follow have chosen to share.
 - **Blend tastes.** Choose whose shared taste should inform your recommendations. Following someone leaves this choice off.
 - **Control sharing.** Use Account to manage personalization, listening activity, taste sharing, private sessions and blocked accounts. New profiles start with personalization, listening sharing and taste sharing on, and private session off.
 
-The **0.2.1 preview** requires **Android 10 or later** and includes the Onda Supabase integration. See the [build report](BUILD_REPORT.md) for completed checks and remaining device validation.
+### Get started in Circle
+
+1. Open **Circle**, then sign in or choose **Create account**. Circle uses its own email account.
+2. Set a display name and a username. Usernames use 3–24 letters, numbers or underscores.
+3. Search in **People**, open a profile and tap **Follow**. Shared listening appears in **Friends**.
+
+To let a friend influence your **For you** recommendations, turn on **Influence my recommendations** on their profile. The switch requires your personalization setting, an active follow and permission to use the other person's shared taste.
 
 ## Build from source
 
